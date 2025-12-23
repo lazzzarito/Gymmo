@@ -215,12 +215,4 @@ Datos: Opción de "Borrado Total" en ajustes (GDPR compliant).
 
 Caché: Limpieza automática de caché de medios del chat cada 7 días para no saturar el teléfono.
 
--- 
-
-## 9. Roadmap de Desarrollo Sugerido
-
-Fase 1 (MVP): Onboarding, DB de 100 ejercicios básicos, Sistema de XP y Rutinas Automáticas. Sin Chat.
-
-Fase 2 (Social): Integración de Chat, Clanes y Historias. DB ampliada a 300 ejercicios.
-
-Fase 3 (Polish & Scale): Tienda de cosméticos, Logros (Badges), Modo "Deidad", DB final de 500 ejercicios, App Nativa (React Native o Capacitor).
+--

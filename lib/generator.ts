@@ -1,0 +1,145 @@
+import { Exercise, MuscleGroup, EXERCISE_DB } from "./exercises";
+import { RoutineItem, RoutineConfig } from "./store";
+
+// Helper to shuffle array
+const shuffle = <T>(array: T[]): T[] => {
+    return array.sort(() => Math.random() - 0.5);
+};
+
+export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number): RoutineItem[] => {
+    if (targetMuscles.length === 0) return [];
+
+    const routine: RoutineItem[] = [];
+
+    // Config based on level (Basic logic for now)
+    const baseSets = level > 5 ? 4 : 3;
+    const baseReps = 10; // Hypertrophy standard
+
+    targetMuscles.forEach(muscle => {
+        // Filter exercises for this muscle
+        const muscleExercises = EXERCISE_DB.filter(ex => ex.muscle === muscle);
+
+        // Strategy: 1 Compound (Heavy) + 2 Isolation per muscle
+        // Note: Our DB generator added tags, we can use 'diff' as proxy for compound/heavy if 'Hard'
+
+        const compounds = shuffle(muscleExercises.filter(ex => ex.difficulty === 'Pro' || ex.difficulty === 'Deidad'));
+        const isolations = shuffle(muscleExercises.filter(ex => ex.difficulty === 'Novato' || ex.difficulty === 'Intermedio'));
+
+        // Pick 1 Main Lift
+        if (compounds.length > 0) {
+            routine.push({
+                ...compounds[0],
+                instanceId: crypto.randomUUID(),
+                config: { sets: baseSets, reps: 6, weight: 0, technique: 'Normal' }
+            });
+        }
+
+        // Pick 2 Accessories
+        isolations.slice(0, 2).forEach(ex => {
+            routine.push({
+                ...ex,
+                instanceId: crypto.randomUUID(),
+                config: { sets: 3, reps: 12, weight: 0, technique: 'Normal' }
+            });
+        });
+    });
+
+    // If routine is too short (e.g. only 1 muscle group), add filler core/cardio
+    if (routine.length < 5) {
+        const fillers = shuffle(EXERCISE_DB.filter(ex => ex.muscle === 'Abdominales' || ex.muscle === 'Cardio'));
+        fillers.slice(0, 5 - routine.length).forEach(ex => {
+            routine.push({
+                ...ex,
+                instanceId: crypto.randomUUID(),
+                config: { sets: 3, reps: 15, weight: 0, technique: 'Normal' }
+            });
+        });
+    }
+
+    return routine;
+};
+
+export const generateDailyQuest = (muscles: MuscleGroup[]): { title: string, description: string[], xpReward: number } => {
+    if (muscles.includes('Piernas')) {
+        return {
+            title: 'Despertar de Piernas',
+            description: ['20 Sentadillas de peso corporal', '1 min Sentadilla isométrica'],
+            xpReward: 50
+        };
+    }
+    if (muscles.includes('Pecho')) {
+        return {
+            title: 'Cobre Pectoral',
+            description: ['15 Flexiones', '20 Aperturas (sin peso)'],
+            xpReward: 50
+        };
+    }
+    if (muscles.includes('Espalda')) {
+        return {
+            title: 'Alas de Murciélago',
+            description: ['10 Dominadas (o Remo en puerta)', '30s Supermans'],
+            xpReward: 50
+        };
+    }
+    if (muscles.includes('Cardio')) {
+        return {
+            title: 'Corazón de Hierro',
+            description: ['50 Jumping Jacks', '2 min Trote estático'],
+            xpReward: 50
+        };
+    }
+    return {
+        title: 'Activación General',
+        description: ['20 Jumping Jacks', '10 Burpees'],
+        xpReward: 50
+    };
+};
+
+export interface WeightSuggestion {
+    exerciseName: string;
+    currentWeight: number;
+    suggestedWeight: number;
+    reason: string;
+}
+
+export const getWeightSuggestions = (history: any[]): WeightSuggestion[] => {
+    if (!history || history.length < 2) return [];
+
+    const workoutLogs = history.filter(h => h.type === 'workout' && h.exercises);
+    if (workoutLogs.length < 2) return [];
+
+    const suggestions: WeightSuggestion[] = [];
+    const exerciseStats: Record<string, { weights: number[], dates: string[] }> = {};
+
+    // Group weights by exercise name
+    workoutLogs.forEach(log => {
+        log.exercises.forEach((ex: RoutineItem) => {
+            if (!exerciseStats[ex.name]) {
+                exerciseStats[ex.name] = { weights: [], dates: [] };
+            }
+            exerciseStats[ex.name].weights.push(ex.config.weight);
+            exerciseStats[ex.name].dates.push(log.date);
+        });
+    });
+
+    // Analyze each exercise
+    Object.keys(exerciseStats).forEach(name => {
+        const stats = exerciseStats[name];
+        if (stats.weights.length >= 2) {
+            const lastWeight = stats.weights[0]; // History is reversed (newest first)
+            const prevWeight = stats.weights[1];
+
+            // If consistency is high (same weight twice), suggest increase
+            if (lastWeight > 0 && lastWeight === prevWeight) {
+                suggestions.push({
+                    exerciseName: name,
+                    currentWeight: lastWeight,
+                    suggestedWeight: lastWeight + 2, // Default increment
+                    reason: 'Has dominado este peso 2 veces seguidas. ¡Sube el nivel!'
+                });
+            }
+        }
+    });
+
+    return suggestions;
+};
