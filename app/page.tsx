@@ -155,7 +155,7 @@ export default function EntryPoint() {
                 className="text-center"
               >
                 <h1 className="text-2xl md:text-3xl text-primary mb-8 leading-relaxed font-vt323 text-4xl">
-                  ¿Comenzamos? Ingresa tu correo electrónico
+                  ¿Listo para la aventura? Ingresa tu correo
                 </h1>
                 <div className="mb-8">
                   <PixelInput
