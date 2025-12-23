@@ -2,6 +2,8 @@
 
 **Gymmo** es una aplicación de fitness gamificada construida con **Next.js**, diseñada para transformar tu rutina de entrenamiento en una aventura épica de RPG. Evoluciona a tu héroe, conquista mazmorras (entrenamientos) y desbloquea tu verdadero potencial.
 
+![Gymmo Logo](logo.png)
+
 ## ✨ Características Principales
 
 - **Dashboard de Héroe:** Monitorea tu Nivel, XP y racha de disciplina.
