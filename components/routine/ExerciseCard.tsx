@@ -25,8 +25,8 @@ export function ExerciseCard({ exercise, onAdd, onRemove, isAdded }: ExerciseCar
                 </div>
                 <div className={cn(
                     "px-1.5 py-0.5 text-[8px] font-press-start border border-black",
-                    exercise.difficulty === 'novice' ? "bg-green-400 text-black" :
-                        exercise.difficulty === 'intermediate' ? "bg-yellow-400 text-black" :
+                    exercise.difficulty === 'Novato' ? "bg-green-400 text-black" :
+                        exercise.difficulty === 'Intermedio' ? "bg-yellow-400 text-black" :
                             "bg-red-500 text-white"
                 )}>
                     {exercise.difficulty.substring(0, 3)}
@@ -41,11 +41,11 @@ export function ExerciseCard({ exercise, onAdd, onRemove, isAdded }: ExerciseCar
             <div className="mt-auto pt-2">
                 {isAdded ? (
                     <PixelButton variant="outline" size="sm" className="w-full text-red-400 hover:bg-red-900/20" onClick={onRemove}>
-                        <Trash2 className="w-4 h-4 mr-1" /> REMOVE
+                        <Trash2 className="w-4 h-4 mr-1" /> ELIMINAR
                     </PixelButton>
                 ) : (
                     <PixelButton variant="secondary" size="sm" className="w-full" onClick={onAdd}>
-                        <Plus className="w-4 h-4 mr-1" /> ADD
+                        <Plus className="w-4 h-4 mr-1" /> AÑADIR
                     </PixelButton>
                 )}
             </div>
