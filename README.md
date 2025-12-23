@@ -55,4 +55,4 @@ Gymmo está optimizado para ser desplegado en **Vercel**. Simplemente conecta tu
 - **Optimización Mobile:** Diseño responsive pensado para el uso en el gimnasio.
 
 ---
-*Desarrollado por [https://1azarito.vercel.app/](https://1azarito.vercel.app/). 2025.*
+*Desarrollado por [1azarito](https://1azarito.vercel.app/) © 2025.*
