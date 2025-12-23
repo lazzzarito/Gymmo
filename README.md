@@ -48,4 +48,4 @@ Gymmo está optimizado para ser desplegado en **Vercel**. Simplemente conecta tu
 - Optimización visual para dispositivos móviles.
 
 ---
-*Desarrollado con pasión por la disciplina y el hierro. 2025.*
+*Desarrollado con pasión gracias a la disciplina y el vicio de levantar hierros. 2025.*
