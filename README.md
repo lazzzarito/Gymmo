@@ -28,26 +28,6 @@
 - **Animaciones:** Framer Motion
 - **Iconos:** Lucide React
 
-## 🛠️ Instalación y Desarrollo
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/lazzzarito/gymmo.git
-   ```
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-3. Inicia el servidor de desarrollo:
-   ```bash
-   npm run dev
-   ```
-4. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
-
-## 📦 Despliegue
-
-Gymmo está optimizado para ser desplegado en **Vercel**. Simplemente conecta tu repositorio de GitHub a Vercel y se desplegará automáticamente.
-
 ## 📄 Notas de Versión (v3.0)
 
 - **Completamente al español:** Toda la interfaz y la base de datos de ejercicios están traducidas.
