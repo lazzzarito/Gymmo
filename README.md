@@ -57,5 +57,5 @@ Gymmo nació de una idea simple: **El fitness debería ser divertido**. Al aplic
 ---
 
 <p align="center">
-  Hecho con 💪 y ☕ por <b>Lazzzarito</b>
+  Hecho con 💪 y ❤️ por <b> <a href="https://github.com/lazzzarito">1azarito</a> </b>
 </p>
