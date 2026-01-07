@@ -1,6 +1,6 @@
 <h1 align="center">  ⚔️ Gymmo RPG: Tu Aventura Fitness </h1>
 
-![Gymmo Logo](logo.webp)
+<div align="center"> ![Gymmo Logo](logo.webp) </div>
 
 <div align="center">
   <p><strong>"No entrenes solo por salud... ¡Entrena para convertirte en una LEYENDA!"</strong> 🏆</p>
@@ -9,11 +9,9 @@
   </a>
 </div>
 
-**Gymmo** transforma tu aburrida rutina de gimnasio en un épico **RPG de Acción**. Cada repetición es un golpe, cada entrenamiento una mazmorra, y cada gota de sudor te acerca al siguiente nivel. Construido con tecnología web moderna y estética Pixel Art retro.
+<p align="center"> **Gymmo** transforma tu aburrida rutina de gimnasio en un épico **RPG de Acción**. Cada repetición es un golpe, cada entrenamiento una mazmorra, y cada gota de sudor te acerca al siguiente nivel. Construido con tecnología web moderna y estética Pixel Art retro. </p>
 
 ---
-
-## 🗺️ Mapa de Características
 
 ### 🔥 El Hub (Tu Base)
 Tu centro de mando. Aquí visualizas tu progreso heroico:
