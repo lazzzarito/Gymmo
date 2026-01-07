@@ -106,7 +106,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 </div>
 
                 <div className="flex justify-center items-center text-gray-600 font-vt323 text-lg pt-4">
-                    <span>Gymmo RPG v3.0 — 2025</span>
+                    <span>Gymmo RPG v1.3 — 2026</span>
                 </div>
             </div>
         </PixelModal>
