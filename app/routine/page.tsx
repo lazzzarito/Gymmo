@@ -8,7 +8,7 @@ export default function RoutinePage() {
     return (
         <div className="min-h-screen bg-background text-foreground">
             <PixelHeader />
-            <main className="pb-20 pt-24 min-h-screen px-4 max-w-md mx-auto">
+            <main className="pb-20 pt-20 min-h-screen px-2 max-w-md mx-auto">
                 <RoutineBuilder />
             </main>
             <PixelBottomNav />

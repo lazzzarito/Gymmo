@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 export default function EntryPoint() {
   const router = useRouter();
-  const { updateProfile, isAuthenticated, name, email: storeEmail } = useGameStore();
+  const { updateProfile, isAuthenticated, name, email: storeEmail, password: storePassword } = useGameStore();
 
   // Si ya está autenticado, redirigir al Hub
   useEffect(() => {
@@ -41,11 +41,11 @@ export default function EntryPoint() {
 
   const handleLogin = () => {
     // Simulación de login local
-    if (formData.email === storeEmail && storeEmail !== '') {
+    if (formData.email === storeEmail && storeEmail !== '' && formData.password === storePassword) {
       updateProfile({ isAuthenticated: true });
       router.push("/hub");
     } else {
-      alert("Credenciales no encontradas localmente. Por favor, crea una nueva aventura.");
+      alert("Credenciales incorrectas o aventura no encontrada. Por favor, revisa tus datos.");
     }
   };
 
@@ -56,6 +56,7 @@ export default function EntryPoint() {
       updateProfile({
         name: formData.name,
         email: formData.email,
+        password: formData.password,
         gender: formData.gender as 'male' | 'female',
         age: Number(formData.age),
         weight: Number(formData.weight),
@@ -155,17 +156,29 @@ export default function EntryPoint() {
                 className="text-center"
               >
                 <h1 className="text-2xl md:text-3xl text-primary mb-8 leading-relaxed font-vt323 text-4xl">
-                  ¿Listo para la aventura? Ingresa tu correo
+                  ¿Listo para la aventura? Crea tu cuenta
                 </h1>
-                <div className="mb-8">
-                  <PixelInput
-                    type="email"
-                    placeholder="tu@correo.com"
-                    value={formData.email}
-                    onChange={(e) => updateForm("email", e.target.value)}
-                  />
+                <div className="space-y-4 mb-8">
+                  <div className="text-left">
+                    <label className="block text-sm mb-2 font-vt323 tracking-widest uppercase text-gray-400">Email</label>
+                    <PixelInput
+                      type="email"
+                      placeholder="tu@correo.com"
+                      value={formData.email}
+                      onChange={(e) => updateForm("email", e.target.value)}
+                    />
+                  </div>
+                  <div className="text-left">
+                    <label className="block text-sm mb-2 font-vt323 tracking-widest uppercase text-gray-400">Contraseña</label>
+                    <PixelInput
+                      type="password"
+                      placeholder="Crea una contraseña"
+                      value={formData.password}
+                      onChange={(e) => updateForm("password", e.target.value)}
+                    />
+                  </div>
                 </div>
-                <PixelButton onClick={nextStep} className="w-full" disabled={!formData.email}>
+                <PixelButton onClick={nextStep} className="w-full" disabled={!formData.email || !formData.password}>
                   DESPERTAR <ArrowRight className="ml-2 inline-block w-4 h-4" />
                 </PixelButton>
               </motion.div>

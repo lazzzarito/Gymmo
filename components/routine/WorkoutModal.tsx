@@ -20,16 +20,35 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
     const [isFinished, setIsFinished] = useState(false);
     const [seconds, setSeconds] = useState(0);
 
-    // Timer logic
+    // Rest Timer State
+    const [isResting, setIsResting] = useState(false);
+    const [restSeconds, setRestSeconds] = useState(0);
+    const DEFAULT_REST = 60; // Default rest if not specified
+
+    // Timer logic (Workout Duration)
     useEffect(() => {
         let interval: NodeJS.Timeout;
-        if (isOpen && !isFinished) {
+        if (isOpen && !isFinished && !isResting) {
             interval = setInterval(() => {
                 setSeconds(s => s + 1);
             }, 1000);
         }
         return () => clearInterval(interval);
-    }, [isOpen, isFinished]);
+    }, [isOpen, isFinished, isResting]);
+
+    // Rest Timer Logic
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isResting && restSeconds > 0) {
+            interval = setInterval(() => {
+                setRestSeconds(s => s - 1);
+            }, 1000);
+        } else if (isResting && restSeconds <= 0) {
+            setIsResting(false);
+            // Play sound?
+        }
+        return () => clearInterval(interval);
+    }, [isResting, restSeconds]);
 
     // Reset timer when exercise changes
     useEffect(() => {
@@ -57,6 +76,23 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
 
         const newCount = currentSetsDone + 1;
         setCompletedSets({ ...completedSets, [currentExercise.instanceId]: newCount });
+
+        // Trigger Rest Timer if not the last set
+        const totalSets = currentExercise.config.sets;
+        if (newCount < totalSets) {
+            const restTime = (currentExercise.config as any).restTime || DEFAULT_REST;
+            startRest(restTime);
+        }
+    };
+
+    const startRest = (duration: number) => {
+        setRestSeconds(duration);
+        setIsResting(true);
+    };
+
+    const skipRest = () => {
+        setIsResting(false);
+        setRestSeconds(0);
     };
 
     const handleNextExercise = () => {
@@ -82,6 +118,20 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
 
     return (
         <PixelModal isOpen={isOpen} onClose={onClose} title={isFinished ? "¡VICTORIA!" : "INCURSIÓN"}>
+            {/* Rest Timer Overlay */}
+            {isResting && (
+                <div className="absolute inset-0 z-50 bg-black/95 flex flex-col items-center justify-center space-y-6">
+                    <h3 className="font-press-start text-xl text-blue-400 animate-pulse">DESCANSO</h3>
+                    <div className="text-6xl font-vt323 text-white">
+                        {Math.floor(restSeconds / 60)}:{restSeconds % 60 < 10 ? '0' : ''}{restSeconds % 60}
+                    </div>
+                    <div className="flex gap-4">
+                        <PixelButton onClick={() => setRestSeconds(s => s + 10)} variant="outline" size="sm">+10s</PixelButton>
+                        <PixelButton onClick={skipRest} variant="primary">¡A LA BATALLA!</PixelButton>
+                    </div>
+                </div>
+            )}
+
             {isFinished ? (
                 <div className="text-center py-8 space-y-4">
                     <h3 className="font-press-start text-xl text-yellow-400">ENTRENAMIENTO COMPLETADO</h3>

@@ -6,6 +6,7 @@ import { useGameStore } from "@/lib/store";
 import { useState } from "react";
 import { Check, Trophy } from "lucide-react";
 import { playSfx } from "@/lib/sound";
+import { EXERCISE_DB } from "@/lib/exercises";
 
 interface QuestModalProps {
     isOpen: boolean;
@@ -50,12 +51,44 @@ export function QuestModal({ isOpen, onClose }: QuestModalProps) {
                         <div className="space-y-2">
                             <h3 className="font-press-start text-lg text-primary">{dailyQuest.title}</h3>
                             <div className="bg-black/30 p-4 rounded border border-gray-700 text-left space-y-2">
-                                {dailyQuest.description.map((step, i) => (
-                                    <div key={i} className="flex items-center gap-2 font-vt323 text-xl">
-                                        <div className={`w-4 h-4 border-2 border-white ${status === 'active' ? 'cursor-pointer hover:bg-white/20' : ''}`} />
-                                        <span>{step}</span>
-                                    </div>
-                                ))}
+                                {dailyQuest.description.map((step, i) => {
+                                    // Complex logic to find specific instruction for this step
+                                    let instructions: string[] | undefined;
+
+                                    if (dailyQuest.relatedExercises && dailyQuest.relatedExercises[i]) {
+                                        const relatedName = dailyQuest.relatedExercises[i];
+                                        const ex = EXERCISE_DB.find(e => e.name === relatedName || e.name.includes(relatedName));
+                                        if (ex) instructions = ex.instructions;
+                                    }
+
+                                    // Fallback text search
+                                    if (!instructions) {
+                                        const ex = EXERCISE_DB.find(e => step.toLowerCase().includes(e.name.toLowerCase()));
+                                        if (ex) instructions = ex.instructions;
+                                    }
+
+                                    return (
+                                        <div key={i} className="space-y-1">
+                                            <div className="flex items-center gap-2 font-vt323 text-xl">
+                                                <div className={`w-4 h-4 border-2 border-white flex-shrink-0 ${status === 'active' ? 'cursor-pointer hover:bg-white/20' : ''}`} />
+                                                <span>{step}</span>
+                                            </div>
+
+                                            {instructions && (
+                                                <div className="ml-6 text-gray-400 group">
+                                                    <div className="text-[10px] font-press-start text-secondary mb-1 flex items-center gap-2">
+
+                                                    </div>
+                                                    <ul className="list-disc pl-4 space-y-1 mt-1 bg-black/50 p-2 rounded border border-gray-800">
+                                                        {instructions.map((inst, idx) => (
+                                                            <li key={idx} className="font-vt323 text-base leading-tight text-gray-300">{inst}</li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </div>
                             <p className="font-press-start text-[10px] text-yellow-500 mt-2">RECOMPENSA: {dailyQuest.xpReward} XP</p>
                         </div>

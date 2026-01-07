@@ -2,52 +2,41 @@
 
 import { Exercise } from "@/lib/exercises";
 import { PixelCard } from "@/components/ui/PixelCard";
-import { PixelButton } from "@/components/ui/PixelButton";
-import { cn } from "@/lib/utils";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 interface ExerciseCardProps {
     exercise: Exercise;
     onAdd?: () => void;
-    onRemove?: () => void;
-    isAdded?: boolean;
 }
 
-export function ExerciseCard({ exercise, onAdd, onRemove, isAdded }: ExerciseCardProps) {
+export function ExerciseCard({ exercise, onAdd }: ExerciseCardProps) {
     return (
-        <PixelCard className={cn(
-            "transition-all active:scale-95 flex flex-col justify-between gap-2 h-full",
-            isAdded ? "border-primary bg-primary/10" : ""
-        )}>
-            <div className="flex justify-between items-start">
-                <div className="w-10 h-10 bg-surface border-2 border-gray-600 flex items-center justify-center text-2xl">
-                    {exercise.icon}
-                </div>
-                <div className={cn(
-                    "px-1.5 py-0.5 text-[8px] font-press-start border border-black",
-                    exercise.difficulty === 'Novato' ? "bg-green-400 text-black" :
-                        exercise.difficulty === 'Intermedio' ? "bg-yellow-400 text-black" :
-                            "bg-red-500 text-white"
-                )}>
-                    {exercise.difficulty.substring(0, 3)}
+        <PixelCard
+            className="flex items-center gap-3 p-2 bg-gray-900 border-gray-800 hover:border-secondary transition-colors cursor-pointer group min-h-[4rem]"
+            onClick={onAdd}
+        >
+            {/* Icon */}
+            <div className="w-8 h-8 flex-shrink-0 bg-black border border-gray-700 rounded flex items-center justify-center text-lg group-hover:bg-secondary/20 group-hover:border-secondary transition-colors">
+                {exercise.icon}
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0 flex flex-col justify-center gap-0.5">
+                <h3 className="font-vt323 text-xs text-white leading-tight break-words group-hover:text-secondary transition-colors">
+                    {exercise.name}
+                </h3>
+                <div className="flex items-center gap-2">
+                    <span className="text-[8px] font-press-start text-gray-500 uppercase px-1 bg-gray-800 rounded">
+                        {exercise.muscle}
+                    </span>
                 </div>
             </div>
 
-            <div>
-                <h4 className="font-press-start text-[10px] leading-tight mb-1">{exercise.name}</h4>
-                <p className="font-vt323 text-gray-400 text-xs line-clamp-2">{exercise.description}</p>
-            </div>
-
-            <div className="mt-auto pt-2">
-                {isAdded ? (
-                    <PixelButton variant="outline" size="sm" className="w-full text-red-400 hover:bg-red-900/20" onClick={onRemove}>
-                        <Trash2 className="w-4 h-4 mr-1" /> ELIMINAR
-                    </PixelButton>
-                ) : (
-                    <PixelButton variant="secondary" size="sm" className="w-full" onClick={onAdd}>
-                        <Plus className="w-4 h-4 mr-1" /> AÑADIR
-                    </PixelButton>
-                )}
+            {/* Add Button (Restored) */}
+            <div className="flex-shrink-0">
+                <div className="h-8 w-8 bg-gray-800 rounded flex items-center justify-center text-secondary hover:bg-secondary hover:text-black transition-colors border border-gray-700">
+                    <Plus className="w-5 h-5" />
+                </div>
             </div>
         </PixelCard>
     );

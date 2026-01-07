@@ -60,39 +60,108 @@ export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number
 };
 
 export const generateDailyQuest = (muscles: MuscleGroup[]): { title: string, description: string[], xpReward: number } => {
+    const randomChoice = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
+
     if (muscles.includes('Piernas')) {
-        return {
-            title: 'Despertar de Piernas',
-            description: ['20 Sentadillas de peso corporal', '1 min Sentadilla isométrica'],
-            xpReward: 50
-        };
+        const quests = [
+            {
+                title: 'Despertar de Piernas',
+                description: ['20 Sentadillas de peso corporal', '1 min Sentadilla isométrica'],
+                xpReward: 50,
+                relatedExercises: ['Sentadilla', 'Sentadilla Isométrica']
+            },
+            {
+                title: 'Piernas de Acero',
+                description: ['30 Zancadas (15/pierna)', '20 Elevaciones de Talón'],
+                xpReward: 60,
+                relatedExercises: ['Zancadas', 'Elevación Gemelos']
+            },
+            {
+                title: 'Sentadillas con Salto', // Match helper name
+                description: ['15 Sentadillas con salto', '30 seg Sentadilla isométrica'],
+                xpReward: 55,
+                relatedExercises: ['Sentadilla con Salto', 'Sentadilla Isométrica']
+            }
+        ];
+        return randomChoice(quests);
     }
     if (muscles.includes('Pecho')) {
-        return {
-            title: 'Cobre Pectoral',
-            description: ['15 Flexiones', '20 Aperturas (sin peso)'],
-            xpReward: 50
-        };
+        const quests = [
+            {
+                title: 'Cobre Pectoral',
+                description: ['15 Flexiones', '20 Exposiciones de Pecho (Aperturas imaginarias)'],
+                xpReward: 50,
+                relatedExercises: ['Flexiones', 'Aperturas']
+            },
+            {
+                title: 'Flexiones Diamante',
+                description: ['10 Flexiones Diamante', '15 Flexiones en rodillas'],
+                xpReward: 60,
+                relatedExercises: ['Flexiones Diamante', 'Flexiones']
+            },
+            {
+                title: 'Empuje Espartano',
+                description: ['12 Flexiones Explosivas', '20 seg Plancha'],
+                xpReward: 70,
+                relatedExercises: ['Flexiones Explosivas', 'Plancha']
+            }
+        ];
+        return randomChoice(quests);
     }
-    if (muscles.includes('Espalda')) {
-        return {
-            title: 'Alas de Murciélago',
-            description: ['10 Dominadas (o Remo en puerta)', '30s Supermans'],
-            xpReward: 50
-        };
+    if (muscles.includes('Espalda') || muscles.includes('Bíceps')) {
+        return randomChoice([
+            {
+                title: 'Alas de Murciélago',
+                description: ['10 Dominadas (o Remo en puerta)', '30s Supermans'],
+                xpReward: 50,
+                relatedExercises: ['Dominadas', 'Supermans']
+            },
+            {
+                title: 'Espalda de Titán',
+                description: ['15 Remo invertido', '20 Buenos Días (sin peso)'],
+                xpReward: 55,
+                relatedExercises: ['Remo con Barra', 'Buenos Días']
+            }
+        ]);
     }
     if (muscles.includes('Cardio')) {
-        return {
-            title: 'Corazón de Hierro',
-            description: ['50 Jumping Jacks', '2 min Trote estático'],
-            xpReward: 50
-        };
+        return randomChoice([
+            {
+                title: 'Corazón de Hierro',
+                description: ['50 Jumping Jacks', '2 min Trote estático'],
+                xpReward: 50,
+                relatedExercises: ['Saltar Comba']
+            },
+            {
+                title: 'Velocidad de la Luz',
+                description: ['30 Burpees', '1 min Descanso activo'],
+                xpReward: 70,
+                relatedExercises: ['Burpees']
+            }
+        ]);
     }
-    return {
-        title: 'Activación General',
-        description: ['20 Jumping Jacks', '10 Burpees'],
-        xpReward: 50
-    };
+
+    // Default / Mix
+    return randomChoice([
+        {
+            title: 'Activación General',
+            description: ['20 Jumping Jacks', '10 Burpees'],
+            xpReward: 50,
+            relatedExercises: ['Burpees']
+        },
+        {
+            title: 'Guerrero Matutino',
+            description: ['1 min Plancha', '20 Abdominales'],
+            xpReward: 50,
+            relatedExercises: ['Plancha', 'Crunch']
+        },
+        {
+            title: 'Agilidad Felina',
+            description: ['30 Escaladores', '15 Zancadas laterales'],
+            xpReward: 55,
+            relatedExercises: ['Zancadas']
+        }
+    ]);
 };
 
 export interface WeightSuggestion {

@@ -1,6 +1,7 @@
 
 import { cn } from "@/lib/utils";
 import { playSfx } from "@/lib/sound";
+import { vibrate } from "@/lib/haptics";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 
@@ -30,7 +31,7 @@ const PixelButton = forwardRef<HTMLButtonElement, PixelButtonProps>(
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={cn(
-                    "px-6 py-3 font-press-start text-sm uppercase tracking-wider relative",
+                    "flex items-center justify-center gap-3 font-press-start uppercase tracking-wider relative whitespace-nowrap",
                     "border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
                     "active:shadow-none active:translate-x-[4px] active:translate-y-[4px]",
                     "transition-none",
@@ -40,6 +41,7 @@ const PixelButton = forwardRef<HTMLButtonElement, PixelButtonProps>(
                 )}
                 onClick={(e) => {
                     playSfx('click');
+                    vibrate(10);
                     props.onClick?.(e);
                 }}
                 {...props}

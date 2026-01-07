@@ -74,43 +74,43 @@ export function WeeklyPlannerModal({ isOpen, onClose }: WeeklyPlannerModalProps)
             <div className="space-y-6">
 
                 {/* Day Selector */}
-                <div className="flex justify-between bg-black/30 p-2 rounded">
+                <div className="flex justify-between gap-1 overflow-x-auto bg-black/30 p-2 rounded">
                     {DAYS.map(day => (
                         <button
                             key={day}
                             onClick={() => setSelectedDay(day)}
                             className={cn(
-                                "flex flex-col items-center p-2 border-2 transition-all w-10 h-14 justify-center",
-                                selectedDay === day ? "border-white bg-primary text-black translate-y-[-4px]" : "border-transparent text-gray-400 hover:text-white",
+                                "flex flex-col items-center p-3 border-2 transition-all min-w-[50px] h-20 justify-center rounded-md",
+                                selectedDay === day ? "border-white bg-primary text-black translate-y-[-4px] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.5)]" : "border-transparent text-gray-400 hover:text-white bg-black/40",
                                 tempPlan[day]?.isActive && selectedDay !== day ? "border-primary/50 text-white" : ""
                             )}
                         >
-                            <span className="font-press-start text-[8px]">{DAY_SHORT[day]}</span>
-                            {tempPlan[day]?.isActive && <div className="w-1.5 h-1.5 bg-green-400 mt-1" />}
+                            <span className="font-press-start text-[10px] sm:text-xs">{DAY_SHORT[day]}</span>
+                            {tempPlan[day]?.isActive && <div className="w-2 h-2 bg-green-400 mt-2 rounded-full" />}
                         </button>
                     ))}
                 </div>
 
                 {/* Editor for Selected Day */}
                 <div className="bg-gray-900 border-2 border-gray-700 p-4 rounded space-y-4">
-                    <div className="flex justify-between items-center text-primary font-press-start text-xs border-b border-gray-700 pb-2">
+                    <div className="flex justify-between items-center text-primary font-press-start text-sm border-b border-gray-700 pb-2">
                         <span>{DAY_LABELS[selectedDay]}</span>
                         <span>{currentSchedule.isActive ? "ENTRENAMIENTO" : "DESCANSO"}</span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-3">
                         {MUSCLE_OPTIONS.map(muscle => (
                             <button
                                 key={muscle}
                                 onClick={() => handleToggleMuscle(muscle)}
                                 className={cn(
-                                    "text-left p-2 text-xs font-vt323 border hover:bg-white/5 transition-colors",
+                                    "text-left p-4 text-sm font-vt323 border-2 transition-all rounded hover:brightness-110 active:scale-95",
                                     currentSchedule.muscles.includes(muscle)
-                                        ? "border-secondary text-secondary bg-secondary/10"
-                                        : "border-gray-800 text-gray-500"
+                                        ? "border-secondary text-secondary bg-secondary/10 shadow-[2px_2px_0px_0px_rgba(255,200,0,0.3)]"
+                                        : "border-gray-700 text-gray-500 bg-black/20"
                                 )}
                             >
-                                {currentSchedule.muscles.includes(muscle) ? "[x] " : "[ ] "}
+                                {currentSchedule.muscles.includes(muscle) ? "[X] " : "[ ] "}
                                 {muscle}
                             </button>
                         ))}

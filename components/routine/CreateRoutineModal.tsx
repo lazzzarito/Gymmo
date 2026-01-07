@@ -50,7 +50,19 @@ export function CreateRoutineModal({ isOpen, onClose }: CreateRoutineModalProps)
                 <div className="space-y-4">
                     <div className="border-b-2 border-gray-700 pb-2">
                         <h3 className="font-press-start text-xs text-secondary">{selectedExercise.name}</h3>
-                        <p className="text-gray-400 text-sm">{selectedExercise.description}</p>
+                        <p className="text-gray-400 text-sm mb-2">{selectedExercise.description}</p>
+
+                        {/* Instructions */}
+                        {selectedExercise.instructions && (
+                            <div className="bg-black/40 p-2 rounded border border-gray-800">
+                                <h4 className="font-press-start text-[8px] text-primary mb-1 uppercase">Técnica</h4>
+                                <ol className="list-decimal pl-4 space-y-1 font-vt323 text-sm text-gray-300">
+                                    {selectedExercise.instructions.map((step, idx) => (
+                                        <li key={idx} className="leading-tight">{step}</li>
+                                    ))}
+                                </ol>
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-3 gap-3">

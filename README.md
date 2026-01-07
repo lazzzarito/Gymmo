@@ -1,38 +1,61 @@
-# Gymmo RPG 🦾🌑🏆
+# ⚔️ Gymmo RPG: Tu Aventura Fitness
 
-**Gymmo** es una aplicación de fitness gamificada construida con **Next.js**, diseñada para transformar tu rutina de entrenamiento en una aventura épica de RPG. Evoluciona a tu héroe, conquista mazmorras (entrenamientos) y desbloquea tu verdadero potencial.
+![Gymmo Logo](logo.webp)
 
-![Logo](logo.webp)
+> **"No entrenes solo por salud... ¡Entrena para convertirte en una LEYENDA!"** 🏆
 
-### 🌐 ¡Prueba la App Online!
-[https://gymmorpg.vercel.app/](https://gymmorpg.vercel.app/)
+[![Vercel App](https://img.shields.io/badge/Jugar%20Online-gymmorpg.vercel.app-black?style=for-the-badge&logo=vercel)](https://gymmorpg.vercel.app/)
+
+**Gymmo** transforma tu aburrida rutina de gimnasio en un épico **RPG de Acción**. Cada repetición es un golpe, cada entrenamiento una mazmorra, y cada gota de sudor te acerca al siguiente nivel. Construido con tecnología web moderna y estética Pixel Art retro.
+
+---
+
+## 🗺️ Mapa de Características
+
+### 🔥 El Hub (Tu Base)
+Tu centro de mando. Aquí visualizas tu progreso heroico:
+- **Llama de Racha**: Mantén el fuego encendido entrenando diariamente.
+- **Estado Vital**: Monitor de Hidratación 💧 y Proteína 🥩.
+- **Misión Diaria**: Retos generados proceduralmente para ganar XP extra.
+- **Oráculo**: Sugerencias inteligentes basadas en tu nivel de fatiga.
+
+### 📜 El Grimorio (Base de Datos)
+Una enciclopedia ancestral con **+500 Ejercicios** detallados:
+- **Filtrado Mágico**: Busca por grupo muscular o nombre.
+- **Instrucciones de Lucha**: Guías paso a paso para ejecutar cada movimiento a la perfección.
+- **Variantes**: Diferentes técnicas (Mancuernas, Barra, Polea) para cada hechizo de fuerza.
+
+### ⚔️ Zona de Combate (Entrenamiento)
+Donde ocurre la magia. Una interfaz de batalla inmersiva:
+- **Temporizador de Descanso**: No te enfríes, ¡la batalla continúa!
+- **Registro de Daño**: Anota tus pesos, series y repeticiones.
+- **Música de Batalla**: Efectos de sonido retro para cada logro.
+
+### 🛡️ Perfil de Héroe
+- **Nivel y Clase**: ¿Eres un Novato o un Guerrero Legendario?
+- **Estadísticas RPG**: Fuerza, Resistencia y Voluntad que suben con tus actos.
+- **Logros**: 36 medallas desbloqueables por hazañas heroicas.
+- **Tarjeta de Gremio**: Comparte tu estatus con amigos mediante códigos visuales.
 
 ---
 
-## ✨ Características Principales
+## �️ Tecnologías del Núcleo
 
-- **Dashboard de Héroe:** Monitorea tu Nivel, XP y racha de disciplina.
-- **El Grimorio (Rutinas):** Constructor de rutinas avanzado con más de 500 ejercicios categorizados.
-- **Incursiones (Dungeon Runs):** Modo ejecución de entrenamiento con tracking de series, repeticiones y peso.
-- **Árbol de Habilidades:** Desbloquea talentos pasivos para mejorar tu progresión.
-- **Sistema de Logros:** 36 trofeos únicos para coleccionar basados en tu esfuerzo.
-- **Gremios & Social:** Únete a clanes de guerreros y conecta con otros héroes mediante códigos QR.
-- **IA Dungeon Master:** Sugerencias inteligentes de progresión de cargas basadas en tu historial.
-- **Privacidad Primero:** Todos tus datos se guardan localmente en tu dispositivo.
+Desarrollado con el stack más rápido del oeste:
 
-## 🚀 Tecnologías
-
-- **Framework:** Next.js (App Router)
-- **Estado:** Zustand (con Persistencia Local)
-- **Estilos:** Tailwind CSS (Estética Pixel Art)
-- **Animaciones:** Framer Motion
-- **Iconos:** Lucide React
-
-## 📄 Notas de Versión (v3.0)
-
-- **Completamente al español:** Toda la interfaz y la base de datos de ejercicios están traducidas.
-- **Sistema de Sesión Híbrido:** Tus datos persisten localmente, permitiéndote cerrar sesión sin perder el progreso.
-- **Optimización Mobile:** Diseño responsive pensado para el uso en el gimnasio.
+- **Frontend**: Next.js 14 (App Router) ⚛️
+- **Estilos**: Tailwind CSS + Framer Motion (Animaciones fluidas) 🎨
+- **Estado**: Zustand (Persistencia local instantánea) 💾
+- **Iconografía**: Lucide React + Pixel Art Custom 🗡️
 
 ---
-*Desarrollado por [1azarito](https://1azarito.vercel.app/) © 2025.*
+
+## 🚀 Misión
+
+Gymmo nació de una idea simple: **El fitness debería ser divertido**. Al aplicar mecánicas de videojuegos (XP, niveles, loot) al ejercicio, engañamos a nuestro cerebro para disfrutar del esfuerzo.
+
+---
+
+<p align="center">
+  Hecho con 💪 y ☕ por <b>Lazzzarito</b>
+</p>

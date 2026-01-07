@@ -17,6 +17,7 @@ export interface DailyQuest {
     title: string;
     description: string[];
     xpReward: number;
+    relatedExercises?: string[];
 }
 
 export interface Talent {
@@ -80,6 +81,7 @@ export type WeeklyPlan = Record<string, DaySchedule>;
 export interface UserState {
     name: string;
     email: string;
+    password?: string; // Local simple auth
     isAuthenticated: boolean;
     gender: Gender;
     dailyQuest: DailyQuest;
@@ -95,8 +97,12 @@ export interface UserState {
     streak: number;
     lastLogin?: string;
 
+    // Feature Persistence
+    dailyHydration: { water: number; protein: number; date: string };
+
     // History & Progression
     activityHistory: ActivityLog[];
+    bossKills: string[];
     weightHistory: WeightRecord[];
     unlockedAchievementIds: string[];
     talents: Talent[];
@@ -110,8 +116,11 @@ export interface UserState {
 
     // Actions
     updateProfile: (data: Partial<UserState>) => void;
+    updateHydration: (type: 'water' | 'protein', change: number) => void;
     addToRoutine: (exercise: Exercise, config?: Partial<RoutineConfig>) => void;
     removeFromRoutine: (instanceId: string) => void;
+    updateRoutineItem: (instanceId: string, config: Partial<RoutineConfig>) => void;
+    reorderRoutine: (routine: RoutineItem[]) => void;
     addXp: (amount: number) => void;
     checkStreak: () => void;
     logActivity: (activity: Omit<ActivityLog, 'id' | 'date'>) => void;
@@ -140,6 +149,7 @@ export const useGameStore = create<UserState>()(
         (set, get) => ({
             name: 'Héroe',
             email: '',
+            password: '',
             isAuthenticated: false,
             gender: '',
             age: 0,
@@ -153,7 +163,9 @@ export const useGameStore = create<UserState>()(
             maxXp: 1000,
             stats: { str: 10, sta: 10, will: 10 },
             streak: 0,
+            dailyHydration: { water: 0, protein: 0, date: '' },
             activityHistory: [],
+            bossKills: [],
             weightHistory: [],
             unlockedAchievementIds: [],
             talents: [],
@@ -164,6 +176,18 @@ export const useGameStore = create<UserState>()(
             socialMessages: [],
 
             updateProfile: (data) => set((state) => ({ ...state, ...data })),
+
+            updateHydration: (type, change) => set((state) => {
+                const today = new Date().toISOString().split('T')[0];
+                const current = state.dailyHydration?.date === today ? state.dailyHydration : { water: 0, protein: 0, date: today };
+                return {
+                    dailyHydration: {
+                        ...current,
+                        [type]: Math.max(0, current[type] + change),
+                        date: today
+                    }
+                };
+            }),
 
             addToRoutine: (ex, config) => set((state) => ({
                 activeRoutine: [
@@ -185,6 +209,14 @@ export const useGameStore = create<UserState>()(
             removeFromRoutine: (id) => set((state) => ({
                 activeRoutine: state.activeRoutine.filter(item => item.instanceId !== id)
             })),
+
+            updateRoutineItem: (instanceId, config) => set((state) => ({
+                activeRoutine: state.activeRoutine.map(item =>
+                    item.instanceId === instanceId ? { ...item, config: { ...item.config, ...config } } : item
+                )
+            })),
+
+            reorderRoutine: (newRoutine) => set({ activeRoutine: newRoutine }),
 
             addXp: (amount) => {
                 const state = get();

@@ -23,16 +23,13 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 <div className="space-y-2">
                     <h3 className="font-press-start text-[10px] text-secondary">COMUNIDAD</h3>
                     <div className="grid grid-cols-2 gap-2">
-                        <a href="https://t.me/GymmoRPG" target="_blank" className="p-3 border-2 border-gray-800 bg-black/40 text-center hover:border-secondary transition-colors flex items-center justify-center gap-2">
-                            <span className="font-vt323 text-xl text-blue-400">Telegram</span>
-                        </a>
                         <a href="https://whatsapp.com/channel/0029VbCADrxIN9iigavdj23h" target="_blank" className="p-3 border-2 border-gray-800 bg-black/40 text-center hover:border-secondary transition-colors flex items-center justify-center gap-2">
                             <span className="font-vt323 text-xl text-green-400">WhatsApp</span>
                         </a>
+                        <a href="https://github.com/lazzzarito/gymmo" target="_blank" className="p-3 border-2 border-gray-800 bg-black/40 text-center hover:border-white transition-colors flex items-center justify-center gap-2">
+                            <span className="font-vt323 text-xl text-gray-400">GitHub</span>
+                        </a>
                     </div>
-                    <a href="https://github.com/lazzzarito/gymmo" target="_blank" className="block p-3 border-2 border-gray-800 bg-black/40 text-center hover:border-white transition-colors">
-                        <span className="font-vt323 text-xl text-gray-400 text-center block">Código en GitHub</span>
-                    </a>
                 </div>
 
                 {/* INFORMACIÓN LEGAL */}
@@ -61,6 +58,27 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                         <PixelButton onClick={() => setSound(!sound)} size="sm" variant="secondary">
                             {sound ? 'CON' : 'SIN'}
                         </PixelButton>
+                    </div>
+                </div>
+
+                {/* NOTIFICACIONES */}
+                <div className="space-y-2">
+                    <h3 className="font-press-start text-[10px] text-secondary">NOTIFICACIONES</h3>
+                    <div className="flex justify-between items-center p-2 bg-black/40 border-2 border-gray-800 rounded">
+                        <span className="font-vt323 text-gray-400">Alertas Diarias</span>
+                        <button
+                            onClick={async () => {
+                                if ("Notification" in window) {
+                                    const permission = await Notification.requestPermission();
+                                    if (permission === "granted") {
+                                        new Notification("Gymmo", { body: "¡Notificaciones activadas!" });
+                                    }
+                                }
+                            }}
+                            className="font-press-start text-[8px] bg-primary text-black px-2 py-1 rounded hover:bg-white transition-colors"
+                        >
+                            ACTIVAR
+                        </button>
                     </div>
                 </div>
 
