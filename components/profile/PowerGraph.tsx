@@ -1,6 +1,7 @@
 "use client";
 
 import { useGameStore } from "@/lib/store";
+import type { RoutineItem } from "@/lib/store";
 import { PixelCard } from "../ui/PixelCard";
 import { cn } from "@/lib/utils";
 
@@ -23,13 +24,13 @@ export function PowerGraph({ type }: PowerGraphProps) {
                     { date: 'J', weight: 79.2 },
                     { date: 'V', weight: 78.9 },
                 ];
-            return data.map(d => ({ label: d.date.slice(-1), value: d.weight }));
+            return data.map((d: { date: string; weight: number }) => ({ label: d.date.slice(-1), value: d.weight }));
         } else {
             // Calculate daily volume (sets * reps * weight)
             const data = activityHistory.length > 3
-                ? activityHistory.slice(-7).map(log => ({
+                ? activityHistory.slice(-7).map((log: { date: string; exercises?: RoutineItem[] }) => ({
                     label: new Date(log.date).toLocaleDateString('es-ES', { weekday: 'short' })[0],
-                    value: log.exercises?.reduce((acc, ex) => acc + (ex.config.sets * ex.config.reps * (ex.config.weight || 1)), 0) || 100
+                    value: log.exercises?.reduce((acc: number, ex: RoutineItem) => acc + (ex.config.sets * ex.config.reps * (ex.config.weight || 1)), 0) || 100
                 }))
                 : [
                     { label: 'L', value: 1200 },
@@ -43,8 +44,8 @@ export function PowerGraph({ type }: PowerGraphProps) {
     };
 
     const chartData = getChartData();
-    const maxVal = Math.max(...chartData.map(d => d.value)) || 1;
-    const minVal = Math.min(...chartData.map(d => d.value)) || 0;
+    const maxVal = Math.max(...chartData.map((d: { value: number }) => d.value)) || 1;
+    const minVal = Math.min(...chartData.map((d: { value: number }) => d.value)) || 0;
 
     return (
         <PixelCard className="p-4 bg-black/40 border-gray-800 relative overflow-hidden h-48 flex flex-col justify-end">
@@ -60,7 +61,7 @@ export function PowerGraph({ type }: PowerGraphProps) {
                     <div className="w-full h-px bg-white" />
                 </div>
 
-                {chartData.map((d, i) => {
+                {chartData.map((d: { label: string; value: number }, i: number) => {
                     // Calculate height percentage
                     let height;
                     if (type === 'weight') {

@@ -13,8 +13,6 @@ export function useDailyQuest() {
     const isBossLevel = level % 10 === 0;
     const musclesKey = todayPlan?.muscles?.join(',');
 
-    const musclesKey = todayPlan?.muscles?.join(',');
-
     useEffect(() => {
         if (todayPlan?.isActive && todayPlan.muscles.length > 0 && !dailyQuest && !isBossLevel) {
             const smartQuest = generateDailyQuest(todayPlan.muscles);

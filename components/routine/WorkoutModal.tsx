@@ -27,7 +27,7 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
         addRestTime,
         formatTime,
         totalExercises,
-    } = useWorkoutSession(activeRoutine, onClose);
+    } = useWorkoutSession(activeRoutine);
 
     if (activeRoutine.length === 0) return null;
     if (!currentExercise && !isFinished) return null;

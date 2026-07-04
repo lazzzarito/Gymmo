@@ -60,7 +60,7 @@ export function QuestModal({ isOpen, onClose }: QuestModalProps) {
                         <div className="space-y-2">
                             <h3 className="font-press-start text-lg text-primary">{dailyQuest.title}</h3>
                             <div className="bg-black/30 p-4 rounded border border-gray-700 text-left space-y-2">
-                                {dailyQuest.description.map((step, i) => {
+                                {dailyQuest.description.map((step: string, i: number) => {
                                     // Complex logic to find specific instruction for this step
                                     let instructions: string[] | undefined;
 

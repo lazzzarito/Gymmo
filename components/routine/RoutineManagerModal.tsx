@@ -6,7 +6,7 @@ import { PixelCard } from "../ui/PixelCard";
 import { PixelButton } from "../ui/PixelButton";
 import { Swords, Trash2, GripVertical, Settings2 } from "lucide-react";
 import { useState } from "react";
-import { Exercise } from "@/lib/exercises";
+import type { RoutineItem } from "@/lib/store";
 import { WorkoutModal } from "./WorkoutModal";
 import { ExerciseDetailsModal } from "./ExerciseDetailsModal";
 
@@ -17,7 +17,7 @@ interface RoutineManagerModalProps {
 
 export function RoutineManagerModal({ isOpen, onClose }: RoutineManagerModalProps) {
     const { activeRoutine, removeFromRoutine } = useGameStore();
-    const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+    const [selectedExercise, setSelectedExercise] = useState<RoutineItem | null>(null);
 
     // Battle/Workout State
     const [isWorkoutOpen, setIsWorkoutOpen] = useState(false);
@@ -58,7 +58,7 @@ export function RoutineManagerModal({ isOpen, onClose }: RoutineManagerModalProp
                     </div>
                 ) : (
                     <div className="space-y-2 overflow-y-auto pr-2 flex-1 min-h-0 scrollbar-hide">
-                        {activeRoutine.map((ex, idx) => (
+                        {activeRoutine.map((ex: RoutineItem, idx: number) => (
                             <PixelCard key={ex.instanceId || idx} className="flex items-center gap-3 p-3 bg-gray-900 border-gray-800 relative group">
                                 <div className="text-gray-600 cursor-grab active:cursor-grabbing">
                                     <GripVertical className="w-4 h-4" />

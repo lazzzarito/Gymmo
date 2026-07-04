@@ -1,8 +1,14 @@
 import { Exercise, MuscleGroup } from '@/lib/exercises';
 import { Friend, Guild, Message } from '@/lib/social';
-export type { ModalSlice } from './modal.slice';
 
-type Gender = 'male' | 'female' | '';
+export interface ModalSlice {
+    openModals: Record<string, boolean>;
+    openModal: (id: string) => void;
+    closeModal: (id: string) => void;
+    toggleModal: (id: string) => void;
+}
+
+export type Gender = 'male' | 'female' | '';
 type ClassType = 'Novato' | 'Intermedio' | 'Pro' | '';
 
 export interface CharacterStats {

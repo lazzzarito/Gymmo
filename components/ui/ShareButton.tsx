@@ -11,6 +11,7 @@ interface ShareButtonProps {
     label?: string;
     variant?: 'primary' | 'secondary' | 'outline' | 'danger';
     className?: string;
+    targetRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export function ShareButton({ fileName = 'gymmo-share', label = 'COMPARTIR', variant = 'outline', className }: ShareButtonProps) {

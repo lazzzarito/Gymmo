@@ -12,8 +12,8 @@ export function HeroRecord() {
     const [activeTab, setActiveTab] = useState<'stats' | 'campaign' | 'body'>('stats');
 
     // Stats
-    const totalWorkouts = activityHistory.filter(a => a.type === 'workout').length;
-    const totalQuests = activityHistory.filter(a => a.type === 'quest').length;
+    const totalWorkouts = activityHistory.filter((a: { type: string }) => a.type === 'workout').length;
+    const totalQuests = activityHistory.filter((a: { type: string }) => a.type === 'quest').length;
 
     // Weight Diff
     const initialWeight = weightHistory.length > 0 ? weightHistory[weightHistory.length - 1].weight : weight;

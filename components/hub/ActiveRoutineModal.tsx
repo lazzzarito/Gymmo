@@ -6,6 +6,7 @@ import { PixelCard } from "../ui/PixelCard";
 import { PixelButton } from "../ui/PixelButton";
 import { Swords } from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { RoutineItem } from "@/lib/store";
 
 interface ActiveRoutineModalProps {
     isOpen: boolean;
@@ -30,7 +31,7 @@ export function ActiveRoutineModal({ isOpen, onClose }: ActiveRoutineModalProps)
                     </div>
                 ) : (
                     <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2 scrollbar-hide">
-                        {activeRoutine.map((ex, idx) => (
+                        {activeRoutine.map((ex: RoutineItem, idx: number) => (
                             <PixelCard key={idx} className="flex items-center gap-3 p-3 bg-black/40 border-gray-800">
                                 <span className="text-2xl">{ex.icon}</span>
                                 <div>

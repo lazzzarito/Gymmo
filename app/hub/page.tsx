@@ -66,7 +66,7 @@ export default function Hub() {
                         <div className="relative z-10">
                             <h3 className="font-vt323 text-2xl mb-1 text-white">{dailyQuest.title}</h3>
                             <div className="text-sm text-gray-400 font-vt323 px-2 border-l-2 border-secondary space-y-1 mb-3">
-                                {dailyQuest.description.map((line, i) => (
+                                {dailyQuest.description.map((line: string, i: number) => (
                                     <span key={i} className="block">• {line}</span>
                                 ))}
                             </div>

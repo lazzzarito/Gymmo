@@ -4,7 +4,7 @@ import { useGameStore } from "@/lib/store";
 import { PixelHeader } from "@/components/layout/PixelHeader";
 import { PixelBottomNav } from "@/components/layout/PixelBottomNav";
 import { PixelCard } from "@/components/ui/PixelCard";
-import { MOCK_FRIENDS, MOCK_GUILDS } from "@/lib/social";
+import { MOCK_FRIENDS, MOCK_GUILDS, type Friend, type Guild, type GuildMember } from "@/lib/social";
 import { Users, Shield, MessageSquare, Plus, QrCode } from "lucide-react";
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,7 @@ export default function CommunityPage() {
     // Filter & Data
     const displayFriends = useMemo(() => friends.length > 0 ? friends : MOCK_FRIENDS, [friends]);
     const allGuilds = useMemo(() => guilds.length > 0 ? guilds : MOCK_GUILDS, [guilds]);
-    const currentGuild = useMemo(() => allGuilds.find(g => g.id === activeGuildId), [allGuilds, activeGuildId]);
+    const currentGuild = useMemo(() => allGuilds.find((g: Guild) => g.id === activeGuildId), [allGuilds, activeGuildId]);
 
     if (chatWith) {
         return (
@@ -80,7 +80,7 @@ export default function CommunityPage() {
                 {activeTab === 'friends' && (
                     <div className="space-y-3">
                         <h2 className="font-press-start text-[10px] text-gray-400 px-1 uppercase mb-2">Compañeros de Armas</h2>
-                        {displayFriends.map(friend => (
+                        {displayFriends.map((friend: Friend) => (
                             <PixelCard
                                 key={friend.id}
                                 className="p-3 border-gray-800 hover:bg-gray-800/20 cursor-pointer group transition-colors"
@@ -157,7 +157,7 @@ export default function CommunityPage() {
 
                                 <div className="space-y-3">
                                     <h3 className="font-press-start text-[10px] text-gray-500 px-1 uppercase">Contribuyentes</h3>
-                                    {currentGuild.members.map(member => (
+                                    {currentGuild.members.map((member: GuildMember) => (
                                         <div key={member.id} className="flex items-center justify-between p-3 bg-black/40 border-l-2 border-secondary">
                                             <div className="font-vt323 text-lg text-white">{member.name}</div>
                                             <div className="font-press-start text-[8px] text-gray-500">{member.contribution} kg</div>
@@ -168,7 +168,7 @@ export default function CommunityPage() {
                         ) : (
                             <div className="space-y-4">
                                 <h2 className="font-press-start text-[10px] text-gray-500 px-1 uppercase">Explorar Gremios</h2>
-                                {allGuilds.map(guild => (
+                                {allGuilds.map((guild: Guild) => (
                                     <PixelCard key={guild.id} className="p-4 border-gray-800 bg-black/20">
                                         <div className="flex justify-between items-start mb-3">
                                             <div className="flex items-center gap-3">

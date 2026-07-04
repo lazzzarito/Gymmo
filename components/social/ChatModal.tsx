@@ -6,6 +6,7 @@ import { useGameStore } from "@/lib/store";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Send, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Message } from "@/lib/social";
 
 interface ChatModalProps {
     isOpen: boolean;
@@ -23,7 +24,7 @@ export function ChatModal({ isOpen, onClose, receiverName, receiverId, fullPage,
 
     const filteredMessages = useMemo(() => {
         if (!receiverId) return socialMessages; // guild/global chat
-        return socialMessages.filter(m =>
+        return socialMessages.filter((m: Message) =>
             (m.senderId === 'me' && m.receiverId === receiverId) ||
             (m.senderId === receiverId)
         );
@@ -58,7 +59,7 @@ export function ChatModal({ isOpen, onClose, receiverName, receiverId, fullPage,
                         No hay mensajes aún. ¡Sé el primero en hablar!
                     </div>
                 ) : (
-                    filteredMessages.map((msg) => {
+                    filteredMessages.map((msg: Message) => {
                         const isMe = msg.senderId === 'me';
                         return (
                             <div key={msg.id} className={cn(

@@ -3,6 +3,7 @@
 import { PixelModal } from "../ui/PixelModal";
 import { useGameStore } from "@/lib/store";
 import { TALENTS } from "@/lib/talents";
+import type { Talent } from "@/lib/store";
 import { PixelCard } from "../ui/PixelCard";
 import { Sparkles, Lock, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,7 +28,7 @@ export function SkillTreeModal({ isOpen, onClose }: SkillTreeModalProps) {
                 {/* Talent List */}
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
                     {TALENTS.map((talent) => {
-                        const isUnlocked = unlockedTalents.some(t => t.id === talent.id);
+                        const isUnlocked = unlockedTalents.some((t: Talent) => t.id === talent.id);
                         const canUnlock = skillPoints > 0 && !isUnlocked;
 
                         return (

@@ -11,8 +11,8 @@ export function TrophyRoom() {
     const { level, stats, activityHistory } = useGameStore();
     const [activeTier, setActiveTier] = useState<'Beginner' | 'Intermediate' | 'Expert'>('Beginner');
 
-    const totalWorkouts = activityHistory.filter(a => a.type === 'workout').length;
-    const totalQuests = activityHistory.filter(a => a.type === 'quest').length;
+    const totalWorkouts = activityHistory.filter((a: { type: string }) => a.type === 'workout').length;
+    const totalQuests = activityHistory.filter((a: { type: string }) => a.type === 'quest').length;
 
     const isUnlocked = (achievement: Achievement) => {
         switch (achievement.requirementType) {

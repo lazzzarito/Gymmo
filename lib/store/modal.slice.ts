@@ -1,13 +1,7 @@
 import { StateCreator } from 'zustand';
+import type { ModalSlice, UserState } from './types';
 
-export interface ModalSlice {
-    openModals: Record<string, boolean>;
-    openModal: (id: string) => void;
-    closeModal: (id: string) => void;
-    toggleModal: (id: string) => void;
-}
-
-export const createModalSlice: StateCreator<ModalSlice, [], [], ModalSlice> = (set) => ({
+export const createModalSlice: StateCreator<UserState, [], [], ModalSlice> = (set) => ({
     openModals: {},
     openModal: (id) => set((state) => ({
         openModals: { ...state.openModals, [id]: true },

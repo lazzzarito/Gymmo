@@ -166,7 +166,7 @@ export interface WeightSuggestion {
     reason: string;
 }
 
-export const getWeightSuggestions = (history: { type: string; exercises?: RoutineItem[] }[]): WeightSuggestion[] => {
+export const getWeightSuggestions = (history: { type: string; exercises?: RoutineItem[]; date?: string }[]): WeightSuggestion[] => {
     if (!history || history.length < 2) return [];
 
     const workoutLogs = history.filter(h => h.type === 'workout' && h.exercises);
@@ -177,12 +177,12 @@ export const getWeightSuggestions = (history: { type: string; exercises?: Routin
 
     // Group weights by exercise name
     workoutLogs.forEach(log => {
-        log.exercises.forEach((ex: RoutineItem) => {
+        log.exercises?.forEach((ex: RoutineItem) => {
             if (!exerciseStats[ex.name]) {
                 exerciseStats[ex.name] = { weights: [], dates: [] };
             }
             exerciseStats[ex.name].weights.push(ex.config.weight);
-            exerciseStats[ex.name].dates.push(log.date);
+            exerciseStats[ex.name].dates.push(log.date || '');
         });
     });
 
