@@ -5,8 +5,8 @@ import { Exercise } from "@/lib/exercises";
 import { useGameStore } from "@/lib/store";
 import { PixelButton } from "../ui/PixelButton";
 import { PixelInput } from "../ui/PixelInput";
-import { useState, useEffect } from "react";
-import { Dumbbell, Plus, Save } from "lucide-react";
+import { useState } from "react";
+import { Plus, Save } from "lucide-react";
 import { PixelCard } from "../ui/PixelCard";
 
 interface ExerciseDetailsModalProps {
@@ -14,33 +14,17 @@ interface ExerciseDetailsModalProps {
     onClose: () => void;
     exercise: Exercise | null;
     mode: 'ADD' | 'EDIT';
-    instanceId?: string; // Only for EDIT mode
+    instanceId?: string;
     initialConfig?: { sets: number; reps: number; weight: number; restTime?: number; technique?: string };
 }
 
 export function ExerciseDetailsModal({ isOpen, onClose, exercise, mode, instanceId, initialConfig }: ExerciseDetailsModalProps) {
     const { addToRoutine, updateRoutineItem } = useGameStore();
 
-    const [config, setConfig] = useState<{
-        sets: number;
-        reps: number;
-        weight: number;
-        restTime: number;
-    }>({ sets: 4, reps: 10, weight: 20, restTime: 120 });
-
-    useEffect(() => {
-        if (initialConfig) {
-            setConfig({
-                sets: initialConfig.sets,
-                reps: initialConfig.reps,
-                weight: initialConfig.weight,
-                restTime: initialConfig.restTime || 120
-            });
-        } else {
-            // Default values reset when opening in ADD mode
-            setConfig({ sets: 4, reps: 10, weight: 20, restTime: 120 });
-        }
-    }, [initialConfig, isOpen]);
+    const [config, setConfig] = useState(() => initialConfig
+        ? { sets: initialConfig.sets, reps: initialConfig.reps, weight: initialConfig.weight, restTime: initialConfig.restTime || 120 }
+        : { sets: 4, reps: 10, weight: 20, restTime: 120 }
+    );
 
     if (!exercise) return null;
 

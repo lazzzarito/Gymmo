@@ -16,6 +16,7 @@ export function PixelHeader({ className }: { className?: string }) {
             <Link href="/profile" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                 <div className="w-10 h-10 bg-primary border-2 border-white rounded overflow-hidden">
                     {/* Avatar placeholder */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=Hero`} alt="Avatar" className="w-full h-full object-cover" />
                 </div>
                 <div>

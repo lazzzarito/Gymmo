@@ -65,7 +65,6 @@ export function PowerGraph({ type }: PowerGraphProps) {
                     let height;
                     if (type === 'weight') {
                         // For weight, we want to see the fluctuation relative to min/max
-                        const range = maxVal - minVal || 1;
                         height = ((d.value - (minVal * 0.95)) / (maxVal - (minVal * 0.95))) * 100;
                     } else {
                         height = (d.value / maxVal) * 100;

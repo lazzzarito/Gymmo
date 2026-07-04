@@ -43,7 +43,7 @@ export function ExerciseBrowser({ inline = false }: ExerciseBrowserProps) {
             {selectedExercise ? (
                 <div className="space-y-6">
                     <div className="flex items-center gap-3 border-b-2 border-gray-700 pb-4">
-                        <button onClick={() => setSelectedExercise(null)} className="p-2 hover:bg-white/10 rounded">
+                        <button onClick={() => setSelectedExercise(null)} aria-label="Volver" className="p-2 hover:bg-white/10 rounded">
                             <ArrowLeft className="w-5 h-5 text-gray-400" />
                         </button>
                         <div>

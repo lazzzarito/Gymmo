@@ -8,7 +8,6 @@ import { User, Edit3, Ruler, Weight, Calendar } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { BiometricsModal } from "@/components/profile/BiometricsModal";
-import { PixelButton } from "@/components/ui/PixelButton";
 import { Sparkles as SparklesIcon } from "lucide-react";
 import { HeroRecord } from "@/components/profile/HeroRecord";
 import { TrophyRoom } from "@/components/profile/TrophyRoom";

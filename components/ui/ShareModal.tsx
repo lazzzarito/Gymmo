@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { toPng } from "html-to-image";
 import { PixelModal } from "./PixelModal";
 import { PixelButton } from "./PixelButton";
-import { Share, Download, Loader2, Camera } from "lucide-react";
+import { Share, Loader2, Camera } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ShareStat {

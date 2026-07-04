@@ -2,9 +2,7 @@
 
 import { useSwipeable } from "react-swipeable";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect } from "react";
-
-const ROUTES = ["/hub", "/routine", "/profile"];
+import { ROUTES } from "@/lib/constants";
 
 export function SwipeLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -19,10 +17,10 @@ export function SwipeLayout({ children }: { children: React.ReactNode }) {
     });
 
     const handleNavigate = (direction: 'next' | 'prev') => {
-        const currentIndex = ROUTES.indexOf(pathname);
-        if (currentIndex === -1) return; // Not on a main tab
+        const currentIndex = ROUTES.indexOf(pathname as typeof ROUTES[number]);
+        if (currentIndex === -1) return;
 
-        let nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+        const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
 
         if (nextIndex >= 0 && nextIndex < ROUTES.length) {
             router.push(ROUTES[nextIndex]);

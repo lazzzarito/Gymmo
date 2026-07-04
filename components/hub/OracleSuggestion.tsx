@@ -1,20 +1,16 @@
 "use client";
 
 import { useGameStore } from "@/lib/store";
-import { getWeightSuggestions, WeightSuggestion } from "@/lib/generator";
+import { getWeightSuggestions } from "@/lib/generator";
 import { PixelCard } from "@/components/ui/PixelCard";
 import { Sparkles, ArrowUpCircle, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 export function OracleSuggestion() {
     const { activityHistory } = useGameStore();
-    const [suggestions, setSuggestions] = useState<WeightSuggestion[]>([]);
     const [isVisible, setIsVisible] = useState(true);
 
-    useEffect(() => {
-        const result = getWeightSuggestions(activityHistory);
-        setSuggestions(result);
-    }, [activityHistory]);
+    const suggestions = useMemo(() => getWeightSuggestions(activityHistory), [activityHistory]);
 
     if (!isVisible || suggestions.length === 0) return null;
 
@@ -24,6 +20,7 @@ export function OracleSuggestion() {
         <PixelCard className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border-blue-400/50 p-4 relative overflow-hidden group animate-in fade-in slide-in-from-bottom-4">
             <button
                 onClick={() => setIsVisible(false)}
+                aria-label="Cerrar sugerencia"
                 className="absolute top-2 right-2 text-gray-500 hover:text-white"
             >
                 <X className="w-4 h-4" />

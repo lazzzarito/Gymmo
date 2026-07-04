@@ -4,44 +4,30 @@ import { useGameStore } from "@/lib/store";
 import { PixelHeader } from "@/components/layout/PixelHeader";
 import { PixelBottomNav } from "@/components/layout/PixelBottomNav";
 import { PixelCard } from "@/components/ui/PixelCard";
-import { PixelButton } from "@/components/ui/PixelButton";
-import { MOCK_FRIENDS, MOCK_GUILDS, MOCK_USERS, MOCK_CHATS, ChatThread, Friend } from "@/lib/social";
-import { Users, Shield, MessageSquare, Sword, Zap, UserPlus, Heart, Search, Plus, QrCode } from "lucide-react";
-import { useState } from "react";
+import { MOCK_FRIENDS, MOCK_GUILDS } from "@/lib/social";
+import { Users, Shield, MessageSquare, Plus, QrCode } from "lucide-react";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { ChatWindow } from "@/components/community/ChatWindow";
+import { ChatModal } from "@/components/social/ChatModal";
 import { QRModal } from "@/components/social/QRModal";
 
 export default function CommunityPage() {
-    const { friends, guilds, activeGuildId, joinGuild, createGuild, level, removeFriend, clearSocialMessages } = useGameStore();
+    const { friends, guilds, activeGuildId, joinGuild, createGuild, level, removeFriend } = useGameStore();
     const [activeTab, setActiveTab] = useState<'friends' | 'guilds'>('friends');
-    const [selectedChat, setSelectedChat] = useState<ChatThread | null>(null);
+    const [chatWith, setChatWith] = useState<{ id: string; name: string } | null>(null);
     const [isQROpen, setIsQROpen] = useState(false);
 
     // Filter & Data
-    const displayFriends = friends.length > 0 ? friends : MOCK_FRIENDS;
-    const allGuilds = guilds.length > 0 ? guilds : MOCK_GUILDS;
-    const currentGuild = allGuilds.find(g => g.id === activeGuildId);
+    const displayFriends = useMemo(() => friends.length > 0 ? friends : MOCK_FRIENDS, [friends]);
+    const allGuilds = useMemo(() => guilds.length > 0 ? guilds : MOCK_GUILDS, [guilds]);
+    const currentGuild = useMemo(() => allGuilds.find(g => g.id === activeGuildId), [allGuilds, activeGuildId]);
 
-    if (selectedChat) {
+    if (chatWith) {
         return (
             <div className="min-h-screen bg-background text-foreground">
                 <PixelHeader />
                 <main className="pb-24 pt-24 px-4 max-w-md mx-auto">
-                    <ChatWindow chat={selectedChat} onBack={() => setSelectedChat(null)} />
-                    <div className="mt-4 flex gap-2">
-                        <PixelButton
-                            variant="outline"
-                            className="flex-1 text-red-500 border-red-900 bg-red-950/20"
-                            size="sm"
-                            onClick={() => {
-                                clearSocialMessages(selectedChat.participants[0].id);
-                                setSelectedChat(null);
-                            }}
-                        >
-                            BORRAR CHAT
-                        </PixelButton>
-                    </div>
+                    <ChatModal isOpen fullPage onClose={() => setChatWith(null)} onBack={() => setChatWith(null)} receiverName={chatWith.name} receiverId={chatWith.id} />
                 </main>
                 <PixelBottomNav />
             </div>
@@ -98,19 +84,7 @@ export default function CommunityPage() {
                             <PixelCard
                                 key={friend.id}
                                 className="p-3 border-gray-800 hover:bg-gray-800/20 cursor-pointer group transition-colors"
-                                onClick={() => setSelectedChat({
-                                    id: `chat-${friend.id}`,
-                                    participants: [{
-                                        id: friend.id,
-                                        displayName: friend.name,
-                                        class: friend.heroClass,
-                                        level: friend.level,
-                                        avatarSeed: friend.avatarSeed || friend.name,
-                                        isOnline: friend.isOnline
-                                    }],
-                                    lastMessage: { id: '0', senderId: friend.id, content: 'Escribe un mensaje...', timestamp: '', type: 'text' },
-                                    unreadCount: 0
-                                })}
+                                onClick={() => setChatWith({ id: friend.id, name: friend.name })}
                             >
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-3">
@@ -118,6 +92,7 @@ export default function CommunityPage() {
                                             "w-10 h-10 border-2 flex items-center justify-center relative bg-gray-900 group-hover:border-secondary transition-colors",
                                             friend.hasAura ? "border-secondary" : "border-gray-700"
                                         )}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${friend.avatarSeed || friend.name}`}
                                                 alt="Avatar"

@@ -3,7 +3,7 @@
 import { ACHIEVEMENTS, Achievement } from "@/lib/achievements";
 import { useGameStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { Trophy, Lock } from "lucide-react";
+import { Lock } from "lucide-react";
 import { useState } from "react";
 import { PixelCard } from "@/components/ui/PixelCard";
 

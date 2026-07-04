@@ -4,7 +4,7 @@ import { PixelCard } from "../ui/PixelCard";
 import { Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/lib/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export function StreakFlame() {
     // This would ideally be persisted in store. 

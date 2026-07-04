@@ -2,7 +2,7 @@
 
 import { PixelModal } from "@/components/ui/PixelModal";
 import { PixelButton } from "@/components/ui/PixelButton";
-import { useGameStore, WeeklyPlan, DaySchedule, DailyQuest } from "@/lib/store";
+import { useGameStore, WeeklyPlan, DailyQuest } from "@/lib/store";
 import { useState } from "react";
 import { MuscleGroup } from "@/lib/exercises";
 import { cn } from "@/lib/utils";
@@ -37,7 +37,7 @@ export function WeeklyPlannerModal({ isOpen, onClose }: WeeklyPlannerModalProps)
         const currentDay = tempPlan[selectedDay];
         const isSelected = currentDay.muscles.includes(muscle);
 
-        let newMuscles = isSelected
+        const newMuscles = isSelected
             ? currentDay.muscles.filter(m => m !== muscle)
             : [...currentDay.muscles, muscle];
 

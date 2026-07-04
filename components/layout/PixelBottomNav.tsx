@@ -22,6 +22,7 @@ export function PixelBottomNav() {
                     return (
                         <button
                             key={item.id}
+                            aria-label={item.label}
                             onClick={() => router.push(item.path)}
                             className={cn(
                                 "flex items-center justify-center gap-2 py-3 transition-all active:scale-95 rounded-lg border-2",

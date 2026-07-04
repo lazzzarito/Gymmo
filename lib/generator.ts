@@ -1,10 +1,6 @@
-import { Exercise, MuscleGroup, EXERCISE_DB } from "./exercises";
-import { RoutineItem, RoutineConfig } from "./store";
-
-// Helper to shuffle array
-const shuffle = <T>(array: T[]): T[] => {
-    return array.sort(() => Math.random() - 0.5);
-};
+import { MuscleGroup, EXERCISE_DB } from "./exercises";
+import { RoutineItem } from "./store";
+import { fisherYatesShuffle } from "./utils";
 
 export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number): RoutineItem[] => {
     if (targetMuscles.length === 0) return [];
@@ -13,7 +9,6 @@ export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number
 
     // Config based on level (Basic logic for now)
     const baseSets = level > 5 ? 4 : 3;
-    const baseReps = 10; // Hypertrophy standard
 
     targetMuscles.forEach(muscle => {
         // Filter exercises for this muscle
@@ -22,8 +17,8 @@ export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number
         // Strategy: 1 Compound (Heavy) + 2 Isolation per muscle
         // Note: Our DB generator added tags, we can use 'diff' as proxy for compound/heavy if 'Hard'
 
-        const compounds = shuffle(muscleExercises.filter(ex => ex.difficulty === 'Pro' || ex.difficulty === 'Deidad'));
-        const isolations = shuffle(muscleExercises.filter(ex => ex.difficulty === 'Novato' || ex.difficulty === 'Intermedio'));
+        const compounds = fisherYatesShuffle(muscleExercises.filter(ex => ex.difficulty === 'Pro' || ex.difficulty === 'Deidad'));
+        const isolations = fisherYatesShuffle(muscleExercises.filter(ex => ex.difficulty === 'Novato' || ex.difficulty === 'Intermedio'));
 
         // Pick 1 Main Lift
         if (compounds.length > 0) {
@@ -46,7 +41,7 @@ export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number
 
     // If routine is too short (e.g. only 1 muscle group), add filler core/cardio
     if (routine.length < 5) {
-        const fillers = shuffle(EXERCISE_DB.filter(ex => ex.muscle === 'Abdominales' || ex.muscle === 'Cardio'));
+        const fillers = fisherYatesShuffle(EXERCISE_DB.filter(ex => ex.muscle === 'Abdominales' || ex.muscle === 'Cardio'));
         fillers.slice(0, 5 - routine.length).forEach(ex => {
             routine.push({
                 ...ex,
@@ -60,7 +55,7 @@ export const generateDailyRoutine = (targetMuscles: MuscleGroup[], level: number
 };
 
 export const generateDailyQuest = (muscles: MuscleGroup[]): { title: string, description: string[], xpReward: number } => {
-    const randomChoice = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
+    const randomChoice = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
 
     if (muscles.includes('Piernas')) {
         const quests = [
@@ -171,7 +166,7 @@ export interface WeightSuggestion {
     reason: string;
 }
 
-export const getWeightSuggestions = (history: any[]): WeightSuggestion[] => {
+export const getWeightSuggestions = (history: { type: string; exercises?: RoutineItem[] }[]): WeightSuggestion[] => {
     if (!history || history.length < 2) return [];
 
     const workoutLogs = history.filter(h => h.type === 'workout' && h.exercises);

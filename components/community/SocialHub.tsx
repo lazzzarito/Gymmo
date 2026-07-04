@@ -3,19 +3,19 @@
 import { useState } from "react";
 import { PixelCard } from "@/components/ui/PixelCard";
 import { PixelButton } from "@/components/ui/PixelButton";
-import { Users, MessageSquare, Plus, Search } from "lucide-react";
-import { MOCK_CHATS, MOCK_USERS, ChatThread, SocialUser } from "@/lib/social";
+import { MessageSquare, Plus, Search } from "lucide-react";
+import { MOCK_CHATS, MOCK_USERS, SocialUser } from "@/lib/social";
 import { cn } from "@/lib/utils";
-import { ChatWindow } from "./ChatWindow";
+import { ChatModal } from "@/components/social/ChatModal";
 
 export function SocialHub() {
     const [activeTab, setActiveTab] = useState<'chats' | 'friends'>('chats');
-    const [chats, setChats] = useState<ChatThread[]>(MOCK_CHATS);
-    const [friends, setFriends] = useState<SocialUser[]>(MOCK_USERS);
-    const [selectedChat, setSelectedChat] = useState<ChatThread | null>(null);
+    const [chats] = useState(MOCK_CHATS);
+    const [friends] = useState<SocialUser[]>(MOCK_USERS);
+    const [chatWith, setChatWith] = useState<{ id: string; name: string } | null>(null);
 
-    if (selectedChat) {
-        return <ChatWindow chat={selectedChat} onBack={() => setSelectedChat(null)} />;
+    if (chatWith) {
+        return <ChatModal isOpen fullPage onClose={() => setChatWith(null)} onBack={() => setChatWith(null)} receiverName={chatWith.name} receiverId={chatWith.id} />;
     }
 
     return (
@@ -53,10 +53,11 @@ export function SocialHub() {
                         {chats.map(chat => (
                             <PixelCard
                                 key={chat.id}
-                                onClick={() => setSelectedChat(chat)}
+                                onClick={() => setChatWith({ id: chat.participants[0].id, name: chat.participants[0].displayName })}
                                 className="flex items-center gap-3 p-3 hover:bg-surface/80 cursor-pointer transition-colors group"
                             >
                                 <div className="relative w-12 h-12">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${chat.participants[0].avatarSeed}`}
                                         alt="Avatar"
@@ -83,6 +84,7 @@ export function SocialHub() {
                             <PixelCard key={friend.id} className="flex items-center justify-between p-3">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 border-2 border-white bg-gray-700">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${friend.avatarSeed}`} alt="Avatar" className="w-full h-full" />
                                     </div>
                                     <div>

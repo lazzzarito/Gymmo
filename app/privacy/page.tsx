@@ -20,7 +20,7 @@ export default function PrivacyPage() {
                     <div className="font-vt323 text-lg text-gray-300 space-y-6">
                         <section>
                             <h2 className="text-secondary font-bold text-xl mb-1">1. ALMACENAMIENTO HEROICO (DATOS)</h2>
-                            <p>Gymmo opera bajo un principio de "Soberanía de Datos". Toda tu información de perfil, rutinas, historial de ejercicios y progreso de nivel se almacena <strong>localmente en tu dispositivo</strong>. No subimos tus estadísticas a servidores externos ni nubes corporativas sin tu consentimiento explícito.</p>
+                            <p>Gymmo opera bajo un principio de &ldquo;Soberan&iacute;a de Datos&rdquo;. Toda tu informaci&oacute;n de perfil, rutinas, historial de ejercicios y progreso de nivel se almacena <strong>localmente en tu dispositivo</strong>. No subimos tus estad&iacute;sticas a servidores externos ni nubes corporativas sin tu consentimiento expl&iacute;cito.</p>
                         </section>
 
                         <section>
@@ -32,13 +32,13 @@ export default function PrivacyPage() {
                             <h2 className="text-secondary font-bold text-xl mb-1">3. PERMISOS DEL SISTEMA</h2>
                             <ul className="list-disc pl-4 space-y-1">
                                 <li><strong>Vibración y Audio:</strong> Utilizamos la API de vibración y audio web para proporcionar retroalimentación táctil y sonora (Feedback Hártico) durante tus batallas (entrenamientos), mejorando la inmersión.</li>
-                                <li><strong>Notificaciones:</strong> Solicitamos permiso para enviarte "Avisos de Misión" locales. Estas alertas sirven para recordarte tu "Combate Diario" y no para publicidad.</li>
+                                <li><strong>Notificaciones:</strong> Solicitamos permiso para enviarte &ldquo;Avisos de Misi&oacute;n&rdquo; locales. Estas alertas sirven para recordarte tu &ldquo;Combate Diario&rdquo; y no para publicidad.</li>
                             </ul>
                         </section>
 
                         <section>
                             <h2 className="text-secondary font-bold text-xl mb-1">4. COMPARTIR CON EL GREMIO</h2>
-                            <p>La función de "Compartir" genera una captura estática de tus logros visuales. Gymmo no transmite datos en tiempo real a otros usuarios. Tú tienes el control total de dónde y con quién compartes estas imágenes (WhatsApp, Redes Sociales, etc).</p>
+                            <p>La funci&oacute;n de &ldquo;Compartir&rdquo; genera una captura est&aacute;tica de tus logros visuales. Gymmo no transmite datos en tiempo real a otros usuarios. T&uacute; tienes el control total de d&oacute;nde y con qui&eacute;n compartes estas im&aacute;genes (WhatsApp, Redes Sociales, etc).</p>
                         </section>
 
                         <section>

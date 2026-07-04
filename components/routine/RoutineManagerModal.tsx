@@ -4,9 +4,9 @@ import { PixelModal } from "../ui/PixelModal";
 import { useGameStore } from "@/lib/store";
 import { PixelCard } from "../ui/PixelCard";
 import { PixelButton } from "../ui/PixelButton";
-import { Swords, Trash2, GripVertical, Settings2, Play } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { Swords, Trash2, GripVertical, Settings2 } from "lucide-react";
 import { useState } from "react";
+import { Exercise } from "@/lib/exercises";
 import { WorkoutModal } from "./WorkoutModal";
 import { ExerciseDetailsModal } from "./ExerciseDetailsModal";
 
@@ -16,9 +16,8 @@ interface RoutineManagerModalProps {
 }
 
 export function RoutineManagerModal({ isOpen, onClose }: RoutineManagerModalProps) {
-    const { activeRoutine, removeFromRoutine, reorderRoutine } = useGameStore();
-    const router = useRouter();
-    const [selectedExercise, setSelectedExercise] = useState<any>(null);
+    const { activeRoutine, removeFromRoutine } = useGameStore();
+    const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
 
     // Battle/Workout State
     const [isWorkoutOpen, setIsWorkoutOpen] = useState(false);
@@ -78,12 +77,14 @@ export function RoutineManagerModal({ isOpen, onClose }: RoutineManagerModalProp
                                 <div className="flex items-center gap-1">
                                     <button
                                         onClick={() => setSelectedExercise(ex)}
+                                        aria-label="Configurar ejercicio"
                                         className="p-2 text-gray-400 hover:text-white transition-colors"
                                     >
                                         <Settings2 className="w-4 h-4" />
                                     </button>
                                     <button
                                         onClick={() => removeFromRoutine(ex.instanceId!)}
+                                        aria-label="Eliminar ejercicio"
                                         className="p-2 text-red-500 hover:bg-red-900/20 rounded transition-colors"
                                     >
                                         <Trash2 className="w-4 h-4" />

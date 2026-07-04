@@ -261,22 +261,6 @@ const INTENSITY_TECHNIQUES = [
     { name: 'Lento', xp: 5, desc: 'Negativa de 4 segundos.' }
 ];
 
-const generateFinalDatabase = (): Exercise[] => {
-    const exercises: Exercise[] = [];
-    let idCounter = 1;
-
-    // 1. Generate core exercises from base list
-    Object.entries(BASE_EXERCISES).forEach(([name, data]) => {
-        // Find muscle for this exercise (simple heuristic or manual mapping needed if not in data, 
-        // but here we know the structure. To keep it simple, I'll loop muscles and check lists, 
-        // but better: add muscle to BASE_EXERCISES data structure or infer it).
-
-        // Let's refine BASE_EXERCISES to include muscle for easier generation
-    });
-
-    return exercises; // Placeholder basically, see below for real implementation
-};
-
 // Re-write of the generator to be robust
 const generateReallyRobustExercises = (): Exercise[] => {
     const db: Exercise[] = [];
@@ -434,4 +418,17 @@ const generateReallyRobustExercises = (): Exercise[] => {
     return db;
 };
 
-export const EXERCISE_DB = generateReallyRobustExercises();
+let _db: Exercise[] | null = null;
+
+function getDb(): Exercise[] {
+    if (!_db) _db = generateReallyRobustExercises();
+    return _db;
+}
+
+export const EXERCISE_DB: Exercise[] = new Proxy(
+    {},
+    {
+        get: (_, prop) => Reflect.get(getDb(), prop),
+        has: (_, prop) => Reflect.has(getDb(), prop),
+    }
+) as Exercise[];

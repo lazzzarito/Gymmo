@@ -4,6 +4,7 @@ import "./globals.css";
 import { LiveBackground } from "@/components/ui/LiveBackground";
 import { Preloader } from "@/components/ui/Preloader";
 import { SwipeLayout } from "@/components/layout/SwipeLayout";
+import { ErrorBoundaryWrapper } from "@/components/layout/ErrorBoundaryWrapper";
 
 const pressStart = Press_Start_2P({
   weight: "400",
@@ -45,9 +46,11 @@ export default function RootLayout({
       >
         <LiveBackground />
         <Preloader />
-        <SwipeLayout>
-          {children}
-        </SwipeLayout>
+        <ErrorBoundaryWrapper>
+          <SwipeLayout>
+            {children}
+          </SwipeLayout>
+        </ErrorBoundaryWrapper>
       </body>
     </html>
   );

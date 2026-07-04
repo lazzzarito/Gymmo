@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Lock, Skull, CheckCircle, Star } from "lucide-react";
+import { Lock, Skull, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/lib/store";
-import { PixelCard } from "@/components/ui/PixelCard";
 
 export function MapComponent() {
     const { level } = useGameStore();
@@ -27,7 +26,6 @@ export function MapComponent() {
             <div className="flex items-center gap-4 px-2 min-w-max">
                 {currentLevels.map((lvl, index) => {
                     const isBoss = (index + 1) === 10;
-                    const isUnlocked = level >= lvl;
                     const isCurrent = level === lvl;
                     const isCompleted = level > lvl;
 

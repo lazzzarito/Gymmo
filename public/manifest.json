@@ -1,17 +1,50 @@
 {
-    "name": "Gymmo RPG",
+    "name": "Gymmo RPG - Fitness Gamified",
     "short_name": "Gymmo",
-    "description": "The RPG Fitness Experience",
+    "description": "Convierte tu entrenamiento en una aventura RPG. Sube de nivel, completa misiones y derrota jefes entrenando.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#0a0a0a",
     "theme_color": "#ff3b3b",
+    "orientation": "portrait",
+    "categories": ["health", "fitness", "games", "lifestyle"],
+    "lang": "es",
+    "scope": "/",
     "icons": [
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
         {
             "src": "/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Entrenar",
+            "short_name": "Entrenar",
+            "description": "Inicia tu entrenamiento del día",
+            "url": "/hub",
+            "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" }]
+        },
+        {
+            "name": "Perfil",
+            "short_name": "Perfil",
+            "description": "Revisa tu progreso y estadísticas",
+            "url": "/profile",
+            "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" }]
+        },
+        {
+            "name": "Comunidad",
+            "short_name": "Comunidad",
+            "description": "Conecta con otros héroes",
+            "url": "/community",
+            "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192", "type": "image/png" }]
         }
     ]
 }

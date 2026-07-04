@@ -3,10 +3,10 @@
 import { PixelModal } from "../ui/PixelModal";
 import { PixelButton } from "../ui/PixelButton";
 import { useGameStore } from "@/lib/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { Html5QrcodeScanner } from "html5-qrcode";
-import { QrCode, Camera, UserPlus, CheckCircle } from "lucide-react";
+import { QrCode, Camera, CheckCircle } from "lucide-react";
 
 interface QRModalProps {
     isOpen: boolean;
@@ -17,10 +17,11 @@ export function QRModal({ isOpen, onClose }: QRModalProps) {
     const { name, level, class: heroClass, addFriend } = useGameStore();
     const [mode, setMode] = useState<'my-code' | 'scanner'>('my-code');
     const [scanResult, setScanResult] = useState<string | null>(null);
+    const qrId = useId();
 
     // My QR Data (Simplified ID)
     const myHeroData = JSON.stringify({
-        id: Math.random().toString(36).substr(2, 9),
+        id: qrId,
         name,
         level,
         heroClass,
@@ -52,10 +53,10 @@ export function QRModal({ isOpen, onClose }: QRModalProps) {
                         });
                         scanner.clear();
                     }
-                } catch (e) {
+                } catch {
                     console.error("Invalid QR Code");
                 }
-            }, (error) => {
+            }, () => {
                 // Ignore scanner errors
             });
 
@@ -63,7 +64,7 @@ export function QRModal({ isOpen, onClose }: QRModalProps) {
                 scanner.clear().catch(e => console.error(e));
             };
         }
-    }, [mode, isOpen]);
+    }, [mode, isOpen, addFriend]);
 
     return (
         <PixelModal isOpen={isOpen} onClose={onClose} title="CONEXIÓN HEROICA">
@@ -111,7 +112,7 @@ export function QRModal({ isOpen, onClose }: QRModalProps) {
                 )}
 
                 <p className="font-vt323 text-gray-500 text-sm italic text-center px-6">
-                    "Las mejores amistades se forjan en el campo de batalla... en persona."
+                    &ldquo;Las mejores amistades se forjan en el campo de batalla... en persona.&rdquo;
                 </p>
             </div>
         </PixelModal>

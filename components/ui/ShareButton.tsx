@@ -7,7 +7,6 @@ import { useState, useRef } from 'react';
 import { ShareCardLayout } from './ShareCardLayout';
 
 interface ShareButtonProps {
-    targetRef?: any;
     fileName?: string;
     label?: string;
     variant?: 'primary' | 'secondary' | 'outline' | 'danger';

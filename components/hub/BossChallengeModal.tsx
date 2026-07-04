@@ -2,9 +2,7 @@
 
 import { PixelModal } from "../ui/PixelModal";
 import { useGameStore } from "@/lib/store";
-import { PixelCard } from "../ui/PixelCard";
-import { Skull, Trophy, Zap, AlertCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Skull, Trophy, AlertCircle } from "lucide-react";
 import { useState } from "react";
 
 interface BossModalProps {
@@ -13,7 +11,7 @@ interface BossModalProps {
 }
 
 export function BossChallengeModal({ isOpen, onClose }: BossModalProps) {
-    const { activityHistory, addXp } = useGameStore();
+    const { addXp } = useGameStore();
     const [victory, setVictory] = useState(false);
 
     // Mock boss data - in a real app, this would be calculated based on PRs

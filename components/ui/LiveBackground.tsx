@@ -19,36 +19,54 @@ export function LiveBackground() {
     );
 }
 
+interface ParticleData {
+    x: number;
+    y: number;
+    drift: number;
+    duration: number;
+    delay: number;
+}
+
 function Particles({ count }: { count: number }) {
-    const [mounted, setMounted] = useState(false);
+    const [state, setState] = useState<{ mounted: boolean; particles: ParticleData[] }>({ mounted: false, particles: [] });
 
     useEffect(() => {
-        setMounted(true);
-    }, []);
+        const w = typeof window !== 'undefined' ? window.innerWidth : 1000;
+        const h = typeof window !== 'undefined' ? window.innerHeight : 1000;
+        const data: ParticleData[] = Array.from({ length: count }).map(() => ({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            drift: Math.random() * -100,
+            duration: Math.random() * 5 + 5,
+            delay: Math.random() * 5,
+        }));
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setState({ mounted: true, particles: data });
+    }, [count]);
 
-    if (!mounted) return null;
+    if (!state.mounted) return null;
 
     return (
         <>
-            {Array.from({ length: count }).map((_, i) => (
+            {state.particles.map((p, i) => (
                 <motion.div
                     key={i}
                     className="absolute w-1 h-1 bg-white/20 rounded-full"
                     initial={{
-                        x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-                        y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 1000),
+                        x: p.x,
+                        y: p.y,
                         opacity: 0,
                     }}
                     animate={{
-                        y: [null, Math.random() * -100],
+                        y: [null, p.y + p.drift],
                         opacity: [0, 0.5, 0],
                         scale: [0, 1.5, 0],
                     }}
                     transition={{
-                        duration: Math.random() * 5 + 5,
+                        duration: p.duration,
                         repeat: Infinity,
                         ease: "linear",
-                        delay: Math.random() * 5,
+                        delay: p.delay,
                     }}
                 />
             ))}

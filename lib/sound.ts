@@ -9,7 +9,7 @@ const getContext = () => {
     if (!audioCtx) {
         // Handle browser differences (webkitAudioContext for Safari) if strictly needed, 
         // but AudioContext is widely supported now.
-        const Ctx = (window.AudioContext || (window as any).webkitAudioContext);
+        const Ctx = (window.AudioContext || (window as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext);
         if (Ctx) audioCtx = new Ctx();
     }
     return audioCtx;

@@ -3,7 +3,6 @@
 import { PixelModal } from "@/components/ui/PixelModal";
 import { PixelButton } from "@/components/ui/PixelButton";
 import { Volume2, VolumeX, Trash2 } from "lucide-react";
-import { useState } from "react";
 import { useGameStore } from "@/lib/store";
 import Link from "next/link";
 
@@ -13,8 +12,7 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-    const [sound, setSound] = useState(true);
-    const { logout, hardReset } = useGameStore();
+    const { soundEnabled, setSoundEnabled, logout, hardReset } = useGameStore();
 
     return (
         <PixelModal isOpen={isOpen} onClose={onClose} title="OPCIONES">
@@ -52,11 +50,11 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                     <h3 className="font-press-start text-[10px] text-secondary">AUDIO</h3>
                     <div className="flex items-center justify-between p-3 border-2 border-gray-800 bg-black/40">
                         <div className="flex items-center gap-3">
-                            {sound ? <Volume2 className="w-5 h-5 text-secondary" /> : <VolumeX className="w-5 h-5 text-gray-500" />}
+                            {soundEnabled ? <Volume2 className="w-5 h-5 text-secondary" /> : <VolumeX className="w-5 h-5 text-gray-500" />}
                             <span className="font-vt323 text-xl">Efectos SFX</span>
                         </div>
-                        <PixelButton onClick={() => setSound(!sound)} size="sm" variant="secondary">
-                            {sound ? 'CON' : 'SIN'}
+                        <PixelButton onClick={() => setSoundEnabled(!soundEnabled)} size="sm" variant="secondary">
+                            {soundEnabled ? 'CON' : 'SIN'}
                         </PixelButton>
                     </div>
                 </div>

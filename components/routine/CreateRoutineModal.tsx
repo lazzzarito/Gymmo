@@ -6,7 +6,7 @@ import { EXERCISE_DB, MuscleGroup, Exercise } from "@/lib/exercises";
 import { useGameStore } from "@/lib/store";
 import { PixelButton } from "@/components/ui/PixelButton";
 import { PixelInput } from "@/components/ui/PixelInput";
-import { Search, Plus, Filter } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 
 interface CreateRoutineModalProps {
     isOpen: boolean;

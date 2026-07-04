@@ -3,8 +3,6 @@
 import { PixelCard } from "../ui/PixelCard";
 import { Scale } from "lucide-react";
 import { useState } from "react";
-import { PixelInput } from "../ui/PixelInput";
-import { PixelButton } from "../ui/PixelButton";
 import { useGameStore } from "@/lib/store";
 
 export function WeightTracker() {

@@ -2,7 +2,8 @@
 import { cn } from "@/lib/utils";
 import { playSfx } from "@/lib/sound";
 import { vibrate } from "@/lib/haptics";
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { useGameStore } from "@/lib/store";
+import { forwardRef } from "react";
 import { motion, HTMLMotionProps } from "framer-motion";
 
 interface PixelButtonProps extends HTMLMotionProps<"button"> {
@@ -12,6 +13,7 @@ interface PixelButtonProps extends HTMLMotionProps<"button"> {
 
 const PixelButton = forwardRef<HTMLButtonElement, PixelButtonProps>(
     ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
+        const soundEnabled = useGameStore((s) => s.soundEnabled);
         const variants = {
             primary: "bg-primary text-black",
             secondary: "bg-secondary text-black",
@@ -40,7 +42,7 @@ const PixelButton = forwardRef<HTMLButtonElement, PixelButtonProps>(
                     className
                 )}
                 onClick={(e) => {
-                    playSfx('click');
+                    if (soundEnabled) playSfx('click');
                     vibrate(10);
                     props.onClick?.(e);
                 }}

@@ -5,7 +5,7 @@ import { PixelCard } from "@/components/ui/PixelCard";
 import { cn } from "@/lib/utils";
 
 export function StatsCard() {
-    const { stats, level, xp, maxXp } = useGameStore();
+    const { stats, xp, maxXp } = useGameStore();
 
     const statRows = [
         { label: "STR", value: stats.str, color: "text-secondary", desc: "Fuerza Física" },

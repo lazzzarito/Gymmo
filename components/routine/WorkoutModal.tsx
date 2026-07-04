@@ -1,12 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { PixelModal } from "@/components/ui/PixelModal";
 import { useGameStore } from "@/lib/store";
 import { PixelButton } from "@/components/ui/PixelButton";
-import { PixelCard } from "@/components/ui/PixelCard";
 import { Check, Timer, ArrowRight, Info } from "lucide-react";
-import { RoutineItem } from "@/lib/store";
+import { useWorkoutSession } from "@/hooks/useWorkoutSession";
 
 interface WorkoutModalProps {
     isOpen: boolean;
@@ -14,106 +12,25 @@ interface WorkoutModalProps {
 }
 
 export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
-    const { activeRoutine, addXp, logActivity } = useGameStore();
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [completedSets, setCompletedSets] = useState<Record<string, number>>({});
-    const [isFinished, setIsFinished] = useState(false);
-    const [seconds, setSeconds] = useState(0);
-
-    // Rest Timer State
-    const [isResting, setIsResting] = useState(false);
-    const [restSeconds, setRestSeconds] = useState(0);
-    const DEFAULT_REST = 60; // Default rest if not specified
-
-    // Timer logic (Workout Duration)
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (isOpen && !isFinished && !isResting) {
-            interval = setInterval(() => {
-                setSeconds(s => s + 1);
-            }, 1000);
-        }
-        return () => clearInterval(interval);
-    }, [isOpen, isFinished, isResting]);
-
-    // Rest Timer Logic
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
-        if (isResting && restSeconds > 0) {
-            interval = setInterval(() => {
-                setRestSeconds(s => s - 1);
-            }, 1000);
-        } else if (isResting && restSeconds <= 0) {
-            setIsResting(false);
-            // Play sound?
-        }
-        return () => clearInterval(interval);
-    }, [isResting, restSeconds]);
-
-    useEffect(() => {
-        setSeconds(0);
-    }, [currentIndex]);
-
-    const formatTime = (totalSeconds: number) => {
-        const mins = Math.floor(totalSeconds / 60);
-        const secs = totalSeconds % 60;
-        return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
+    const { activeRoutine } = useGameStore();
+    const {
+        currentExercise,
+        currentSetsDone,
+        isFinished,
+        seconds,
+        isResting,
+        restSeconds,
+        currentIndex,
+        handleCompleteSet,
+        skipRest,
+        handleNext,
+        addRestTime,
+        formatTime,
+        totalExercises,
+    } = useWorkoutSession(activeRoutine, onClose);
 
     if (activeRoutine.length === 0) return null;
-
-    const currentExercise = activeRoutine[currentIndex];
-
-    // Safety check just in case index goes out of bounds
     if (!currentExercise && !isFinished) return null;
-
-    // Initialize set count for this exercise if not exists
-    const currentSetsDone = completedSets[currentExercise?.instanceId || ''] || 0;
-
-    const handleCompleteSet = () => {
-        if (!currentExercise) return;
-
-        const newCount = currentSetsDone + 1;
-        setCompletedSets({ ...completedSets, [currentExercise.instanceId]: newCount });
-
-        // Trigger Rest Timer if not the last set
-        const totalSets = currentExercise.config.sets;
-        if (newCount < totalSets) {
-            const restTime = (currentExercise.config as any).restTime || DEFAULT_REST;
-            startRest(restTime);
-        }
-    };
-
-    const startRest = (duration: number) => {
-        setRestSeconds(duration);
-        setIsResting(true);
-    };
-
-    const skipRest = () => {
-        setIsResting(false);
-        setRestSeconds(0);
-    };
-
-    const handleNextExercise = () => {
-        if (currentIndex < activeRoutine.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-        } else {
-            finishWorkout();
-        }
-    };
-
-    const finishWorkout = () => {
-        setIsFinished(true);
-        const totalXp = activeRoutine.reduce((acc, ex) => acc + ex.xpReward, 0);
-        addXp(totalXp);
-
-        // Log to history
-        logActivity({
-            type: 'workout',
-            title: `Dungeon Run: ${activeRoutine[0]?.muscle || 'Entrenamiento'}`,
-            xpEarned: totalXp
-        });
-    };
 
     return (
         <PixelModal isOpen={isOpen} onClose={onClose} title={isFinished ? "¡VICTORIA!" : "INCURSIÓN"}>
@@ -125,7 +42,7 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
                         {Math.floor(restSeconds / 60)}:{restSeconds % 60 < 10 ? '0' : ''}{restSeconds % 60}
                     </div>
                     <div className="flex gap-4">
-                        <PixelButton onClick={() => setRestSeconds(s => s + 10)} variant="outline" size="sm">+10s</PixelButton>
+                        <PixelButton onClick={() => addRestTime(10)} variant="outline" size="sm">+10s</PixelButton>
                         <PixelButton onClick={skipRest} variant="primary">¡A LA BATALLA!</PixelButton>
                     </div>
                 </div>
@@ -141,7 +58,7 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
                 <div className="space-y-6">
                     {/* Header: Progress */}
                     <div className="flex justify-between text-xs font-press-start text-gray-500">
-                        <span>EJERCICIO {currentIndex + 1}/{activeRoutine.length}</span>
+                        <span>EJERCICIO {currentIndex + 1}/{totalExercises}</span>
                         <span className="text-secondary flex items-center gap-1 font-mono">
                             <Timer className="w-3 h-3" /> {formatTime(seconds)}
                         </span>
@@ -197,8 +114,8 @@ export function WorkoutModal({ isOpen, onClose }: WorkoutModalProps) {
                     {/* Controls */}
                     <div className="pt-4 border-t-2 border-dashed border-gray-700">
                         {currentSetsDone >= (currentExercise.config?.sets || 0) ? (
-                            <PixelButton onClick={handleNextExercise} className="w-full animate-bounce">
-                                {currentIndex === activeRoutine.length - 1 ? "FINALIZAR" : "SIGUIENTE EJERCICIO"} <ArrowRight className="ml-2 w-4 h-4" />
+                            <PixelButton onClick={handleNext} className="w-full animate-bounce">
+                                {currentIndex === totalExercises - 1 ? "FINALIZAR" : "SIGUIENTE EJERCICIO"} <ArrowRight className="ml-2 w-4 h-4" />
                             </PixelButton>
                         ) : (
                             <p className="text-center font-vt323 text-gray-500">Completa los sets para avanzar.</p>

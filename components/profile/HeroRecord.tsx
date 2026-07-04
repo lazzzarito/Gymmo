@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PixelCard } from "@/components/ui/PixelCard";
 import { useGameStore } from "@/lib/store";
-import { Activity, Dumbbell, TrendingUp, Calendar, Sword, Shield, Zap } from "lucide-react";
+import { Activity, Calendar, Sword, Shield, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PowerGraph } from "./PowerGraph";
 

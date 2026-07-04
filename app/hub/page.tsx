@@ -2,45 +2,28 @@
 
 import { PixelButton } from "@/components/ui/PixelButton";
 import { PixelCard } from "@/components/ui/PixelCard";
-import { Flame, Calendar, ArrowRight, Swords, Skull, Check } from "lucide-react";
+import { Flame, Calendar, ArrowRight, Swords, Check } from "lucide-react";
 import { useGameStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { QuestModal } from "@/components/hub/QuestModal";
 
 import { WeeklyPlannerModal } from "@/components/hub/WeeklyPlannerModal";
-import { generateDailyRoutine, generateDailyQuest } from "@/lib/generator";
-import { useRouter } from "next/navigation";
+import { generateDailyRoutine } from "@/lib/generator";
+
 import { OracleSuggestion } from "@/components/hub/OracleSuggestion";
 import { RoutineManagerModal } from "@/components/routine/RoutineManagerModal";
 import { StreakFlame } from "@/components/hub/StreakFlame";
 import { HydrationTracker } from "@/components/hub/HydrationTracker";
 import { WeightTracker } from "@/components/hub/WeightTracker";
+import { useDailyQuest } from "@/hooks/useDailyQuest";
 
 export default function Hub() {
-    const { dailyQuest, weeklyPlan, level, setRoutine, updateProfile } = useGameStore();
-    const router = useRouter();
+    const { weeklyPlan, level, setRoutine } = useGameStore();
     const [isQuestOpen, setIsQuestOpen] = useState(false);
     const [isPlannerOpen, setIsPlannerOpen] = useState(false);
-    const [isBossOpen, setIsBossOpen] = useState(false);
     const [isRoutineOpen, setIsRoutineOpen] = useState(false);
-
-    // 1. Detect Today's Plan
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const todayIndex = new Date().getDay();
-    const todayKey = days[todayIndex];
-    const todayPlan = weeklyPlan?.[todayKey];
-
-    // Determine if Boss Level
-    const isBossLevel = level % 10 === 0;
-
-    // 2. [EFFECT] Generate Smart Daily Quest on Load
-    useEffect(() => {
-        if (todayPlan?.isActive && todayPlan.muscles.length > 0 && !dailyQuest && !isBossLevel) {
-            const smartQuest = generateDailyQuest(todayPlan.muscles);
-            updateProfile({ dailyQuest: smartQuest });
-        }
-    }, [todayKey, todayPlan?.isActive, JSON.stringify(todayPlan?.muscles), isBossLevel, dailyQuest, updateProfile]);
+    const { dailyQuest, todayPlan } = useDailyQuest();
 
     const handleDungeonRun = () => {
         if (!todayPlan || !todayPlan.isActive) {
@@ -58,7 +41,6 @@ export default function Hub() {
         setIsRoutineOpen(true);
     };
 
-    const daysShort = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const DAY_NAMES: Record<string, string> = { 'Mon': 'Lun', 'Tue': 'Mar', 'Wed': 'Mié', 'Thu': 'Jue', 'Fri': 'Vie', 'Sat': 'Sáb', 'Sun': 'Dom' };
 
     return (

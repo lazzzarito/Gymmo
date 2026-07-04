@@ -55,7 +55,8 @@ export interface Message {
     content: string;
     timestamp: string;
     type: 'text' | 'routine_share';
-    routineId?: string; // Optional link to a routine
+    routineId?: string;
+    receiverId?: string; // For private 1:1 messages; if omitted, it's a guild/global message
 }
 
 export interface GuildExpedition {

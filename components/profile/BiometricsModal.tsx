@@ -4,7 +4,6 @@ import { useState } from "react";
 import { PixelModal } from "@/components/ui/PixelModal";
 import { useGameStore } from "@/lib/store";
 import { PixelButton } from "@/components/ui/PixelButton";
-import { PixelCard } from "@/components/ui/PixelCard";
 import { User, Ruler, Weight, Calendar, VenusAndMars } from "lucide-react";
 
 interface BiometricsModalProps {
@@ -27,7 +26,7 @@ export function BiometricsModal({ isOpen, onClose }: BiometricsModalProps) {
         // Update general profile
         updateProfile({
             name: form.name,
-            gender: form.gender as any,
+            gender: form.gender as string,
             age: Number(form.age),
             height: Number(form.height),
             weight: Number(form.weight) // This updates the store value
@@ -67,7 +66,7 @@ export function BiometricsModal({ isOpen, onClose }: BiometricsModalProps) {
                         </label>
                         <select
                             value={form.gender}
-                            onChange={(e) => setForm({ ...form, gender: e.target.value as any })}
+                            onChange={(e) => setForm({ ...form, gender: e.target.value as string })}
                             className={inputClasses}
                         >
                             <option value="">Seleccionar</option>

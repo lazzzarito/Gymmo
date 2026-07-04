@@ -1,8 +1,7 @@
 "use client";
 
 import { PixelCard } from "../ui/PixelCard";
-import { GlassWater, Beef } from "lucide-react"; // Beef icon as protein proxy
-import { useState } from "react";
+import { GlassWater, Beef } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { playSfx } from "@/lib/sound";
 import { vibrate } from "@/lib/haptics";

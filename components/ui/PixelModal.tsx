@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PixelCard } from "./PixelCard";
 import { AnimatePresence, motion } from "framer-motion";
@@ -54,7 +54,7 @@ export function PixelModal({ isOpen, onClose, title, children }: PixelModalProps
                         <PixelCard className="bg-background border-white shadow-[0px_-4px_0px_0px_rgba(255,255,255,0.2)] max-h-[85vh] overflow-y-auto rounded-b-none sm:rounded-b-lg border-b-0 sm:border-b-4">
                             <div className="flex justify-between items-center mb-6 pb-2 border-b-4 border-black/10 sticky top-0 bg-background/95 backdrop-blur z-10 pt-2">
                                 <h2 className="font-press-start text-sm text-primary uppercase">{title}</h2>
-                                <button onClick={onClose} className="hover:text-red-500 transition-colors bg-black/10 p-1 rounded">
+                                <button onClick={onClose} aria-label="Cerrar" className="hover:text-red-500 transition-colors bg-black/10 p-1 rounded">
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>

@@ -36,12 +36,12 @@ export default function TermsPage() {
 
                         <section>
                             <h2 className="text-secondary font-bold text-xl mb-1">4. PROPIEDAD INTELECTUAL</h2>
-                            <p>Todo el arte, código, mecánicas de "Jefes", y narrativa visual de Gymmo son propiedad intelectual de los desarrolladores. Tienes una licencia personal, no transferible, para usar la app con fines de entretenimiento y salud personal.</p>
+                            <p>Todo el arte, c&oacute;digo, mec&aacute;nicas de &ldquo;Jefes&rdquo;, y narrativa visual de Gymmo son propiedad intelectual de los desarrolladores. Tienes una licencia personal, no transferible, para usar la app con fines de entretenimiento y salud personal.</p>
                         </section>
 
                         <section>
                             <h2 className="text-secondary font-bold text-xl mb-1">5. ESTADO ALPHA/BETA</h2>
-                            <p>La aplicación se encuentra en desarrollo activo. Pueden aparecer "Bugs" (errores) inesperados como monstruos errantes. Al usarla, aceptas que cierta data podría requerir reinicios o actualizaciones manuales.</p>
+                            <p>La aplicaci&oacute;n se encuentra en desarrollo activo. Pueden aparecer &ldquo;Bugs&rdquo; (errores) inesperados como monstruos errantes. Al usarla, aceptas que cierta data podr&iacute;a requerir reinicios o actualizaciones manuales.</p>
                         </section>
                     </div>
                 </PixelCard>

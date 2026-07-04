@@ -3,12 +3,11 @@
 import { useGameStore } from "@/lib/store";
 import { EXERCISE_DB, Exercise } from "@/lib/exercises";
 import { ExerciseCard } from "./ExerciseCard";
-import { PixelCard } from "@/components/ui/PixelCard";
 import { PixelButton } from "@/components/ui/PixelButton";
 import { Swords, Scroll } from "lucide-react";
 
 import { ExerciseDetailsModal } from "./ExerciseDetailsModal";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { PixelInput } from "@/components/ui/PixelInput";
 import { cn } from "@/lib/utils";
 import { RoutineManagerModal } from "./RoutineManagerModal";
@@ -24,11 +23,11 @@ export function RoutineBuilder() {
 
     const muscleGroups: (import('@/lib/exercises').MuscleGroup | 'All')[] = ['All', 'Pecho', 'Espalda', 'Piernas', 'Hombros', 'Bíceps', 'Tríceps', 'Abdominales', 'Cardio'];
 
-    const filteredExercises = EXERCISE_DB.filter(ex => {
+    const filteredExercises = useMemo(() => EXERCISE_DB.filter(ex => {
         const matchMuscle = selectedMuscle === 'All' || ex.muscle === selectedMuscle;
         const matchSearch = ex.name.toLowerCase().includes(search.toLowerCase());
         return matchMuscle && matchSearch;
-    }).slice(0, 50);
+    }).slice(0, 50), [selectedMuscle, search]);
 
     return (
         <div className="h-full flex flex-col pt-4">

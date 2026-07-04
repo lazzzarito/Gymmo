@@ -1,11 +1,11 @@
 "use client";
 
 import { useGameStore } from "@/lib/store";
-import { Swords, Flame, Trophy } from "lucide-react";
+import { Swords, Flame } from "lucide-react";
 import { forwardRef } from "react";
 
 export const ShareCardLayout = forwardRef<HTMLDivElement>((props, ref) => {
-    const { level, dailyQuest, streak, age, weight, name } = useGameStore();
+    const { level, dailyQuest, streak } = useGameStore();
 
     return (
         <div ref={ref} className="fixed top-0 left-0 -z-50 w-[400px] bg-black text-white p-6 font-press-start border-4 border-secondary">
