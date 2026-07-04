@@ -7,7 +7,7 @@ export const createSettingsSlice: StateCreator<UserState, [], [], SettingsSlice>
     setSoundEnabled: (enabled) => set({ soundEnabled: enabled }),
 
     logout: () => {
-        set({} as Partial<UserState>);
+        localStorage.removeItem('gymmo-storage');
         window.location.href = '/';
     },
 

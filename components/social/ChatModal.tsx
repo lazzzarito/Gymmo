@@ -47,7 +47,7 @@ export function ChatModal({ isOpen, onClose, receiverName, receiverId, fullPage,
     };
 
     const handleClear = () => {
-        clearSocialMessages(receiverName || '');
+        clearSocialMessages(receiverId || '');
         onBack?.();
     };
 

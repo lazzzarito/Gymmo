@@ -14,19 +14,21 @@ interface ShareButtonProps {
     targetRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export function ShareButton({ fileName = 'gymmo-share', label = 'COMPARTIR', variant = 'outline', className }: ShareButtonProps) {
+export function ShareButton({ fileName = 'gymmo-share', label = 'COMPARTIR', variant = 'outline', className, targetRef }: ShareButtonProps) {
     const [isLoading, setIsLoading] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
 
+    const captureRef = targetRef || cardRef;
+
     const handleShare = async () => {
-        if (!cardRef.current) return;
+        if (!captureRef.current) return;
         setIsLoading(true);
 
         try {
             // Wait a tick for render if hidden
             await new Promise(resolve => setTimeout(resolve, 100));
 
-            const dataUrl = await toPng(cardRef.current, { cacheBust: true, backgroundColor: '#000000', pixelRatio: 2 });
+            const dataUrl = await toPng(captureRef.current, { cacheBust: true, backgroundColor: '#000000', pixelRatio: 2 });
 
             // Convert to Blob
             const blob = await (await fetch(dataUrl)).blob();

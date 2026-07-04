@@ -6,12 +6,13 @@ import { useState } from "react";
 import { useGameStore } from "@/lib/store";
 
 export function WeightTracker() {
-    const { weight: storeWeight, updateProfile } = useGameStore();
+    const { weight: storeWeight, updateProfile, updateWeight } = useGameStore();
     const [editMode, setEditMode] = useState(false);
     const [weight, setWeight] = useState(storeWeight || 75);
 
     const handleSave = () => {
         updateProfile({ weight: Number(weight) });
+        updateWeight(Number(weight));
         setEditMode(false);
     };
 

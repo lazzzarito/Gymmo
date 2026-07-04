@@ -141,7 +141,7 @@ export function WeeklyPlannerModal({ isOpen, onClose }: WeeklyPlannerModalProps)
                     </div>
 
                     <div className="pt-2 border-t border-gray-700 font-vt323 text-gray-400 text-sm flex justify-between items-center">
-                        <label>Hora: <input type="time" className="bg-transparent border-b border-gray-500 text-white" defaultValue={currentSchedule.time} /></label>
+                        <label>Hora: <input type="time" className="bg-transparent border-b border-gray-500 text-white" value={currentSchedule.time} onChange={(e) => setTempPlan({ ...tempPlan, [selectedDay]: { ...currentSchedule, time: e.target.value } })} /></label>
                         <PixelButton size="sm" variant="secondary" onClick={handleResetDay}>
                             REINICIAR DÍA
                         </PixelButton>

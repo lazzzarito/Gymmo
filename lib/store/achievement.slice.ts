@@ -30,7 +30,7 @@ export const createAchievementSlice: StateCreator<UserState, [], [], Achievement
         const existingIndex = updatedHistory.findIndex(r => r.date === today);
 
         if (existingIndex !== -1) {
-            updatedHistory[existingIndex].weight = newWeight;
+            updatedHistory[existingIndex] = { ...updatedHistory[existingIndex], weight: newWeight };
         } else {
             updatedHistory.push({ date: today, weight: newWeight });
         }

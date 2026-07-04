@@ -1,4 +1,4 @@
-import { useRef, useState, MouseEvent } from 'react';
+import { useRef, useState } from 'react';
 
 export function useDraggableScroll() {
     const ref = useRef<HTMLDivElement>(null);
@@ -6,26 +6,40 @@ export function useDraggableScroll() {
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
 
-    const onMouseDown = (e: MouseEvent) => {
+    const getPageX = (e: React.MouseEvent | React.TouchEvent): number => {
+        if ('touches' in e) {
+            return e.touches[0]?.pageX || 0;
+        }
+        return e.pageX;
+    };
+
+    const onMouseDown = (e: React.MouseEvent) => {
         if (!ref.current) return;
         setIsDragging(true);
         setStartX(e.pageX - ref.current.offsetLeft);
         setScrollLeft(ref.current.scrollLeft);
     };
 
-    const onMouseLeave = () => {
+    const onTouchStart = (e: React.TouchEvent) => {
+        if (!ref.current) return;
+        setIsDragging(true);
+        setStartX(e.touches[0].pageX - ref.current.offsetLeft);
+        setScrollLeft(ref.current.scrollLeft);
+    };
+
+    const onLeave = () => {
         setIsDragging(false);
     };
 
-    const onMouseUp = () => {
+    const onUp = () => {
         setIsDragging(false);
     };
 
-    const onMouseMove = (e: MouseEvent) => {
+    const onMove = (e: React.MouseEvent | React.TouchEvent) => {
         if (!isDragging || !ref.current) return;
         e.preventDefault();
-        const x = e.pageX - ref.current.offsetLeft;
-        const walk = (x - startX) * 2; // Scroll-fast
+        const x = getPageX(e) - ref.current.offsetLeft;
+        const walk = (x - startX) * 2;
         ref.current.scrollLeft = scrollLeft - walk;
     };
 
@@ -33,9 +47,12 @@ export function useDraggableScroll() {
         ref,
         events: {
             onMouseDown,
-            onMouseLeave,
-            onMouseUp,
-            onMouseMove,
+            onMouseLeave: onLeave,
+            onMouseUp: onUp,
+            onMouseMove: onMove,
+            onTouchStart,
+            onTouchEnd: onUp,
+            onTouchMove: onMove,
             style: { cursor: isDragging ? 'grabbing' : 'grab' } as React.CSSProperties
         }
     };

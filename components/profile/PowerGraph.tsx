@@ -46,6 +46,7 @@ export function PowerGraph({ type }: PowerGraphProps) {
     const chartData = getChartData();
     const maxVal = Math.max(...chartData.map((d: { value: number }) => d.value)) || 1;
     const minVal = Math.min(...chartData.map((d: { value: number }) => d.value)) || 0;
+    const valueRange = maxVal - minVal;
 
     return (
         <PixelCard className="p-4 bg-black/40 border-gray-800 relative overflow-hidden h-48 flex flex-col justify-end">
@@ -65,10 +66,10 @@ export function PowerGraph({ type }: PowerGraphProps) {
                     // Calculate height percentage
                     let height;
                     if (type === 'weight') {
-                        // For weight, we want to see the fluctuation relative to min/max
-                        height = ((d.value - (minVal * 0.95)) / (maxVal - (minVal * 0.95))) * 100;
+                        const effectiveRange = valueRange > 0 ? valueRange : maxVal * 0.1;
+                        height = ((d.value - minVal) / effectiveRange) * 80 + 10;
                     } else {
-                        height = (d.value / maxVal) * 100;
+                        height = maxVal > 0 ? (d.value / maxVal) * 100 : 10;
                     }
 
                     return (

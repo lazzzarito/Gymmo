@@ -5,7 +5,7 @@ import { useGameStore } from "@/lib/store";
 import { PixelCard } from "../ui/PixelCard";
 import { PixelButton } from "../ui/PixelButton";
 import { Swords, Trash2, GripVertical, Settings2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { RoutineItem } from "@/lib/store";
 import { WorkoutModal } from "./WorkoutModal";
 import { ExerciseDetailsModal } from "./ExerciseDetailsModal";
@@ -24,23 +24,43 @@ export function RoutineManagerModal({ isOpen, onClose }: RoutineManagerModalProp
     const [isCountingDown, setIsCountingDown] = useState(false);
     const [countdown, setCountdown] = useState(3);
 
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, []);
+
     const handleStart = () => {
         if (activeRoutine.length === 0) return;
         setIsCountingDown(true);
         setCountdown(3);
 
-        const timer = setInterval(() => {
+        timerRef.current = setInterval(() => {
             setCountdown(prev => {
                 if (prev <= 1) {
-                    clearInterval(timer);
-                    setIsCountingDown(false);
-                    setIsWorkoutOpen(true);
+                    if (timerRef.current) clearInterval(timerRef.current);
+                    timerRef.current = null;
                     return 0;
                 }
                 return prev - 1;
             });
         }, 1000);
     };
+
+    useEffect(() => {
+        if (countdown === 0 && isCountingDown) {
+            const id = setTimeout(() => {
+                setIsCountingDown(false);
+                setIsWorkoutOpen(true);
+            }, 0);
+            return () => clearTimeout(id);
+        }
+    }, [countdown, isCountingDown]);
 
     // If workout is open, we shouldn't close the manager modal underneath?
     // Actually, maybe we should close the manager modal once the workout modal opens?

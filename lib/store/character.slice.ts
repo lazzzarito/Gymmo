@@ -61,14 +61,19 @@ export const createCharacterSlice: StateCreator<UserState, [], [], CharacterSlic
 
     unlockTalent: (talentId) => set((state) => {
         if (state.skillPoints <= 0) return state;
-        if (state.talents.some(t => t.id === talentId)) return state;
-        const talent = state.talents.find(t => t.id === talentId);
-        if (talent && talent.level >= talent.maxLevel) return state;
+        const existing = state.talents.find(t => t.id === talentId);
+        if (existing) {
+            if (existing.level >= existing.maxLevel) return state;
+            return {
+                skillPoints: state.skillPoints - 1,
+                talents: state.talents.map(t =>
+                    t.id === talentId ? { ...t, level: t.level + 1 } : t
+                ),
+            };
+        }
         return {
             skillPoints: state.skillPoints - 1,
-            talents: state.talents.map(t =>
-                t.id === talentId ? { ...t, level: t.level + 1 } : t
-            ),
+            talents: [...state.talents, { id: talentId, name: '', description: '', level: 1, maxLevel: 1, type: 'xp_boost' as const }],
         };
     }),
 });
