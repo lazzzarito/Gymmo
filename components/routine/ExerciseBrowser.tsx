@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { EXERCISE_DB, MuscleGroup, Exercise } from "@/lib/exercises";
 import { useGameStore } from "@/lib/store";
 import { PixelButton } from "@/components/ui/PixelButton";
@@ -17,14 +17,18 @@ export function ExerciseBrowser({ inline = false }: ExerciseBrowserProps) {
     const [search, setSearch] = useState("");
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [config, setConfig] = useState({ sets: 4, reps: 10, weight: 20 });
+    const [visibleCount, setVisibleCount] = useState(50);
 
     const muscleGroups: (MuscleGroup | 'All')[] = ['All', 'Pecho', 'Espalda', 'Piernas', 'Hombros', 'Bíceps', 'Tríceps', 'Abdominales', 'Cardio'];
 
-    const filteredExercises = EXERCISE_DB.filter(ex => {
+    const filteredExercises = useMemo(() => EXERCISE_DB.filter(ex => {
         const matchMuscle = selectedMuscle === 'All' || ex.muscle === selectedMuscle;
         const matchSearch = ex.name.toLowerCase().includes(search.toLowerCase());
         return matchMuscle && matchSearch;
-    }).slice(0, 50);
+    }), [selectedMuscle, search]);
+
+    const visibleExercises = filteredExercises.slice(0, visibleCount);
+    const hasMore = filteredExercises.length > visibleCount;
 
     const handleAdd = () => {
         if (selectedExercise) {
@@ -102,7 +106,7 @@ export function ExerciseBrowser({ inline = false }: ExerciseBrowserProps) {
                     </div>
 
                     <div className={`overflow-y-auto space-y-2 border-t-2 border-dashed border-gray-800 pt-4 pr-1 ${inline ? 'flex-1' : 'h-[40vh]'}`}>
-                        {filteredExercises.map(ex => (
+                        {visibleExercises.map(ex => (
                             <div
                                 key={ex.id}
                                 className="flex justify-between items-center p-3 hover:bg-white/5 border-2 border-transparent hover:border-gray-700 transition-all cursor-pointer group"
@@ -120,6 +124,11 @@ export function ExerciseBrowser({ inline = false }: ExerciseBrowserProps) {
                                 </div>
                             </div>
                         ))}
+                        {hasMore && (
+                            <PixelButton onClick={() => setVisibleCount(c => c + 50)} variant="outline" size="sm" className="w-full">
+                                VER MÁS ({(filteredExercises.length - visibleCount)} restantes)
+                            </PixelButton>
+                        )}
                     </div>
                 </>
             )}

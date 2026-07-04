@@ -5,7 +5,7 @@ import { useGameStore } from "@/lib/store";
 import { generateDailyQuest } from "@/lib/generator";
 
 export function useDailyQuest() {
-    const { dailyQuest, weeklyPlan, level, updateProfile } = useGameStore();
+    const { dailyQuest, weeklyPlan, level, setDailyQuest } = useGameStore();
 
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const todayKey = days[new Date().getDay()];
@@ -16,10 +16,10 @@ export function useDailyQuest() {
     useEffect(() => {
         if (todayPlan?.isActive && todayPlan.muscles.length > 0 && !dailyQuest && !isBossLevel) {
             const smartQuest = generateDailyQuest(todayPlan.muscles);
-            updateProfile({ dailyQuest: smartQuest });
+            setDailyQuest(smartQuest);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [todayKey, todayPlan?.isActive, musclesKey, isBossLevel, dailyQuest, updateProfile]);
+    }, [todayKey, todayPlan?.isActive, musclesKey, isBossLevel, dailyQuest, setDailyQuest]);
 
     return { dailyQuest, isBossLevel, todayPlan };
 }

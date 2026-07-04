@@ -1,5 +1,8 @@
 import { StateCreator } from 'zustand';
-import type { UserState, CharacterSlice } from './types';
+import type { UserState, CharacterSlice, Talent } from './types';
+import { TALENTS } from '@/lib/talents';
+
+const DEFAULT_TALENT: Omit<Talent, 'id'> = { name: '', description: '', level: 1, maxLevel: 1, type: 'xp_boost' };
 
 export const createCharacterSlice: StateCreator<UserState, [], [], CharacterSlice> = (set, get) => ({
     name: 'Héroe',
@@ -19,12 +22,14 @@ export const createCharacterSlice: StateCreator<UserState, [], [], CharacterSlic
     updateProfile: (data) => set((state) => ({ ...state, ...data })),
 
     addXp: (amount) => {
-        const state = get();
-        const newXp = state.xp + amount;
+        let state = get();
+        let remaining = state.xp + amount;
 
-        if (newXp >= state.maxXp) {
-            set({
-                xp: newXp - state.maxXp,
+        while (remaining >= state.maxXp) {
+            remaining -= state.maxXp;
+            state = {
+                ...state,
+                xp: remaining,
                 level: state.level + 1,
                 maxXp: Math.floor(state.maxXp * 1.2),
                 stats: {
@@ -33,12 +38,14 @@ export const createCharacterSlice: StateCreator<UserState, [], [], CharacterSlic
                     will: state.stats.will + 2,
                 },
                 skillPoints: state.skillPoints + 1,
-            });
-        } else {
-            set({ xp: newXp });
+            };
+            set(state);
+            get().checkAchievements();
         }
 
-        get().checkAchievements();
+        if (remaining !== state.xp) {
+            set({ xp: remaining });
+        }
     },
 
     checkStreak: () => {
@@ -71,9 +78,10 @@ export const createCharacterSlice: StateCreator<UserState, [], [], CharacterSlic
                 ),
             };
         }
+        const talentDef = TALENTS.find(t => t.id === talentId);
         return {
             skillPoints: state.skillPoints - 1,
-            talents: [...state.talents, { id: talentId, name: '', description: '', level: 1, maxLevel: 1, type: 'xp_boost' as const }],
+            talents: [...state.talents, talentDef ? { ...talentDef, level: 1 } : { id: talentId, ...DEFAULT_TALENT }],
         };
     }),
 });

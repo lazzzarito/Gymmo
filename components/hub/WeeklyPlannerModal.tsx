@@ -60,7 +60,7 @@ export function WeeklyPlannerModal({ isOpen, onClose }: WeeklyPlannerModalProps)
         const todayPlan = tempPlan[todayKey];
 
         if (todayPlan?.isActive && todayPlan.muscles.length > 0) {
-            const { level, setRoutine, updateProfile } = useGameStore.getState();
+            const { level, setRoutine, setDailyQuest } = useGameStore.getState();
 
             // Always create a fresh routine and quest when plan is saved if it's training day
             // This ensures the current quest/routine matches the NEWLY saved plan
@@ -68,12 +68,12 @@ export function WeeklyPlannerModal({ isOpen, onClose }: WeeklyPlannerModalProps)
             setRoutine(newRoutine);
 
             const smartQuest = generateDailyQuest(todayPlan.muscles);
-            updateProfile({ dailyQuest: smartQuest as DailyQuest });
+            setDailyQuest(smartQuest as DailyQuest);
         } else {
             // If today is now a rest day, clear them
-            const { setRoutine, updateProfile } = useGameStore.getState();
+            const { setRoutine, setDailyQuest } = useGameStore.getState();
             setRoutine([]);
-            updateProfile({ dailyQuest: null });
+            setDailyQuest(null);
         }
 
         onClose();

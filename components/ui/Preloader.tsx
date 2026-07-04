@@ -8,12 +8,13 @@ export function Preloader() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Simulate loading time or wait for window load
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-
-        return () => clearTimeout(timer);
+        const onLoad = () => setIsLoading(false);
+        if (document.readyState === 'complete') {
+            onLoad();
+            return;
+        }
+        window.addEventListener('load', onLoad);
+        return () => window.removeEventListener('load', onLoad);
     }, []);
 
     return (

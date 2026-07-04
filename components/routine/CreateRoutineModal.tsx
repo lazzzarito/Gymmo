@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { PixelModal } from "@/components/ui/PixelModal";
 import { EXERCISE_DB, MuscleGroup, Exercise } from "@/lib/exercises";
 import { useGameStore } from "@/lib/store";
@@ -21,14 +21,18 @@ export function CreateRoutineModal({ isOpen, onClose }: CreateRoutineModalProps)
     // Configuration State for the selected exercise to add
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [config, setConfig] = useState({ sets: 4, reps: 10, weight: 20 });
+    const [visibleCount, setVisibleCount] = useState(50);
 
     const muscleGroups: (MuscleGroup | 'All')[] = ['All', 'Pecho', 'Espalda', 'Piernas', 'Hombros', 'Bíceps', 'Tríceps', 'Abdominales', 'Cardio'];
 
-    const filteredExercises = EXERCISE_DB.filter(ex => {
+    const filteredExercises = useMemo(() => EXERCISE_DB.filter(ex => {
         const matchMuscle = selectedMuscle === 'All' || ex.muscle === selectedMuscle;
         const matchSearch = ex.name.toLowerCase().includes(search.toLowerCase());
         return matchMuscle && matchSearch;
-    }).slice(0, 50); // Limit visible for performance
+    }), [selectedMuscle, search]);
+
+    const visibleExercises = filteredExercises.slice(0, visibleCount);
+    const hasMore = filteredExercises.length > visibleCount;
 
     const handleAdd = () => {
         if (selectedExercise) {
@@ -59,7 +63,7 @@ export function CreateRoutineModal({ isOpen, onClose }: CreateRoutineModalProps)
                                 <ol className="list-decimal pl-4 space-y-1 font-vt323 text-sm text-gray-300">
                                     {selectedExercise.instructions.map((step, idx) => (
                                         <li key={idx} className="leading-tight">{step}</li>
-                                    ))}
+                        ))}
                                 </ol>
                             </div>
                         )}
@@ -116,7 +120,7 @@ export function CreateRoutineModal({ isOpen, onClose }: CreateRoutineModalProps)
                     </div>
 
                     <div className="h-[40vh] overflow-y-auto space-y-2 border-t-2 border-dashed border-gray-800 pt-2">
-                        {filteredExercises.map(ex => (
+                        {visibleExercises.map(ex => (
                             <div key={ex.id} className="flex justify-between items-center p-2 hover:bg-white/5 border border-transparent hover:border-white/20 cursor-pointer" onClick={() => setSelectedExercise(ex)}>
                                 <div className="flex items-center gap-2">
                                     <span className="text-lg">{ex.icon}</span>
@@ -128,6 +132,11 @@ export function CreateRoutineModal({ isOpen, onClose }: CreateRoutineModalProps)
                                 <Plus className="w-4 h-4 text-primary" />
                             </div>
                         ))}
+                        {hasMore && (
+                            <PixelButton onClick={() => setVisibleCount(c => c + 50)} variant="outline" size="sm" className="w-full">
+                                VER MÁS ({(filteredExercises.length - visibleCount)} restantes)
+                            </PixelButton>
+                        )}
                     </div>
 
                     <PixelButton onClick={onClose} className="w-full" variant="secondary">

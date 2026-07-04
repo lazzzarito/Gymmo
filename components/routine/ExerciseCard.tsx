@@ -1,6 +1,5 @@
 "use client";
 
-import { memo } from "react";
 import type { Exercise } from "@/lib/exercises";
 import { PixelCard } from "@/components/ui/PixelCard";
 import { Plus } from "lucide-react";
@@ -38,4 +37,4 @@ const ExerciseCardBase = ({ exercise, onAdd }: ExerciseCardProps) => (
     </PixelCard>
 );
 
-export const ExerciseCard = memo(ExerciseCardBase);
+export const ExerciseCard = ExerciseCardBase;

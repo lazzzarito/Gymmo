@@ -39,4 +39,6 @@ export const createRoutineSlice: StateCreator<UserState, [], [], RoutineSlice> =
     updateWeeklyPlan: (plan) => set({ weeklyPlan: plan }),
 
     setRoutine: (routine) => set({ activeRoutine: routine }),
+
+    setDailyQuest: (quest) => set({ dailyQuest: quest }),
 });

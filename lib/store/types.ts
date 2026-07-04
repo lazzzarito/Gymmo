@@ -98,7 +98,7 @@ export interface CharacterSlice {
     lastLogin?: string;
     skillPoints: number;
     talents: Talent[];
-    updateProfile: (data: Partial<UserState>) => void;
+    updateProfile: (data: Partial<CharacterSlice>) => void;
     addXp: (amount: number) => void;
     checkStreak: () => void;
     unlockTalent: (talentId: string) => void;
@@ -114,6 +114,7 @@ export interface RoutineSlice {
     reorderRoutine: (routine: RoutineItem[]) => void;
     updateWeeklyPlan: (plan: WeeklyPlan) => void;
     setRoutine: (routine: RoutineItem[]) => void;
+    setDailyQuest: (quest: DailyQuest | null) => void;
 }
 
 export interface SocialSlice {

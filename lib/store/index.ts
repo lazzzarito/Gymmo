@@ -23,8 +23,9 @@ export const useGameStore = create<UserState>()(
         {
             name: 'gymmo-storage',
             partialize: (state) => {
-                const { ...rest } = state;
-                return rest;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { openModals, socialMessages, activityHistory, ...persisted } = state;
+                return persisted;
             },
         }
     )

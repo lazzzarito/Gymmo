@@ -7,7 +7,7 @@ import { PixelButton } from "@/components/ui/PixelButton";
 import { Swords, Scroll } from "lucide-react";
 
 import { ExerciseDetailsModal } from "./ExerciseDetailsModal";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { PixelInput } from "@/components/ui/PixelInput";
 import { cn } from "@/lib/utils";
 import { RoutineManagerModal } from "./RoutineManagerModal";
@@ -20,6 +20,7 @@ export function RoutineBuilder() {
     const [search, setSearch] = useState("");
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [isManagerOpen, setIsManagerOpen] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(50);
 
     const muscleGroups: (import('@/lib/exercises').MuscleGroup | 'All')[] = ['All', 'Pecho', 'Espalda', 'Piernas', 'Hombros', 'Bíceps', 'Tríceps', 'Abdominales', 'Cardio'];
 
@@ -27,7 +28,11 @@ export function RoutineBuilder() {
         const matchMuscle = selectedMuscle === 'All' || ex.muscle === selectedMuscle;
         const matchSearch = ex.name.toLowerCase().includes(search.toLowerCase());
         return matchMuscle && matchSearch;
-    }).slice(0, 50), [selectedMuscle, search]);
+    }), [selectedMuscle, search]);
+
+    const visibleExercises = filteredExercises.slice(0, visibleCount);
+    const hasMore = filteredExercises.length > visibleCount;
+    const onAddExercise = useCallback((ex: Exercise) => setSelectedExercise(ex), []);
 
     return (
         <div className="h-full flex flex-col pt-4">
@@ -84,17 +89,22 @@ export function RoutineBuilder() {
 
                     {/* List */}
                     <div className="grid grid-cols-1 gap-1 overflow-y-auto pr-2 scrollbar-hide flex-1">
-                        {filteredExercises.map(ex => (
+                        {visibleExercises.map(ex => (
                             <div
                                 key={ex.id}
                                 className="transform transition-all duration-200 hover:translate-x-1"
                             >
                                 <ExerciseCard
                                     exercise={ex}
-                                    onAdd={() => setSelectedExercise(ex)}
+                                    onAdd={() => onAddExercise(ex)}
                                 />
                             </div>
                         ))}
+                        {hasMore && (
+                            <PixelButton onClick={() => setVisibleCount(c => c + 50)} variant="outline" size="sm" className="w-full mt-2">
+                                VER MÁS ({(filteredExercises.length - visibleCount)} restantes)
+                            </PixelButton>
+                        )}
                     </div>
                 </div>
             </div>
