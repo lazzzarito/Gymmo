@@ -1,6 +1,6 @@
 // @ts-check
-const { spawnSync } = require("node:child_process");
-const { serwist } = require("@serwist/next/config");
+import { spawnSync } from "node:child_process";
+import { serwist } from "@serwist/next/config";
 
 const revision =
     spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf-8" }).stdout?.trim() ??
@@ -13,4 +13,4 @@ const config = serwist({
     additionalPrecacheEntries: [{ url: "/~offline", revision }],
 });
 
-module.exports = config;
+export default config;
