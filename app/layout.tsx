@@ -5,6 +5,7 @@ import { LiveBackground } from "@/components/ui/LiveBackground";
 import { Preloader } from "@/components/ui/Preloader";
 import { SwipeLayout } from "@/components/layout/SwipeLayout";
 import { ErrorBoundaryWrapper } from "@/components/layout/ErrorBoundaryWrapper";
+import { SerwistProvider } from "@serwist/next/react";
 
 const pressStart = Press_Start_2P({
   weight: "400",
@@ -44,13 +45,15 @@ export default function RootLayout({
       <body
         className={`${pressStart.variable} ${vt323.variable} antialiased bg-background text-foreground font-vt323`}
       >
-        <LiveBackground />
-        <Preloader />
-        <ErrorBoundaryWrapper>
-          <SwipeLayout>
-            {children}
-          </SwipeLayout>
-        </ErrorBoundaryWrapper>
+        <SerwistProvider swUrl="/sw.js">
+          <LiveBackground />
+          <Preloader />
+          <ErrorBoundaryWrapper>
+            <SwipeLayout>
+              {children}
+            </SwipeLayout>
+          </ErrorBoundaryWrapper>
+        </SerwistProvider>
       </body>
     </html>
   );
